@@ -1,10 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:conditional_builder/conditional_builder.dart';
-import 'package:flutter_quiz/quiz.dart';
+import 'package:http/http.dart' as http;
 
 import 'quiz.dart';
 import 'finish.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -18,59 +18,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Future<QuestionTable> futureQuestionTable;
   int _qIdx = 0;
   int _score = 0;
-  var _questions = const [
-    {
-      'q': '1 + 10',
-      'answers': [
-        {
-          'answer': '11',
-          'correct': true
-        },
-        {
-          'answer': '21',
-          'correct': false
-        },
-        {
-          'answer': '31',
-          'correct': false
-        }
-      ]
-    },
-    {
-      'q': '2 * 20',
-      'answers': [
-        {
-          'answer': '40',
-          'correct': true
-        },
-        {
-          'answer': '21',
-          'correct': false
-        },
-        {
-          'answer': '31',
-          'correct': false
-        }
-      ]    },
-    {
-      'q': '3 * 7',
-      'answers': [
-        {
-          'answer': '11',
-          'correct': false
-        },
-        {
-          'answer': '21',
-          'correct': true
-        },
-        {
-          'answer': '31',
-          'correct': false
-        }
-      ]    }
-  ];
 
   void _answerQuestion(bool correct) {
     if (correct) _score ++;
@@ -88,6 +38,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureQuestionTable = fetchQuestionTable();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -97,10 +54,22 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children:
+            [
               ConditionalBuilder(
                   condition: _qIdx <= 2,
-                  builder: (context) => Quiz(_qIdx, _questions, _answerQuestion),
+                  builder: (context) => FutureBuilder<QuestionTable>(
+                    future: futureQuestionTable,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Quiz(_qIdx, snapshot.data.questions, _answerQuestion);
+                      } else if (snapshot.hasError) {
+                        return Text('sorry');
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
                   fallback: (context) => Finish(_reset, _score),
               )
             ],
@@ -108,5 +77,26 @@ class _MyAppState extends State<MyApp> {
         )
       ),
     );
+  }
+}
+
+class QuestionTable {
+  var questions;
+
+  QuestionTable({this.questions});
+
+  factory QuestionTable.fromJson(List <dynamic> json) {
+    return QuestionTable(questions: json);
+  }
+}
+
+Future<QuestionTable> fetchQuestionTable() async {
+  final response =
+  await http.get('http://localhost:3000/api/v1/questions');
+
+  if (response.statusCode == 200) {
+    return QuestionTable.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load questions');
   }
 }
