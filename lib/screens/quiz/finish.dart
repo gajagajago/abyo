@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Finish extends StatelessWidget {
-  final Function _func;
-  final int _score;
+  final Function func;
+  final int score;
 
-  Finish(this._func, this._score);
+  Finish(this.func, this.score);
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-        child: Text('Score: $_score'),
-        onPressed: _func
+        child: Text('Score: $score'),
+        onPressed: func
     );
   }
 

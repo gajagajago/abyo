@@ -1,102 +1,23 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:conditional_builder/conditional_builder.dart';
-import 'package:http/http.dart' as http;
 
-import 'quiz.dart';
-import 'finish.dart';
+import 'screens/home/home_app.dart';
+import 'screens/quiz/quiz_app.dart';
+import 'screens/expense/expense_app.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
-}
-
-class _MyAppState extends State<MyApp> {
-  Future<QuestionTable> futureQuestionTable;
-  int _qIdx = 0;
-  int _score = 0;
-
-  void _answerQuestion(bool correct) {
-    if (correct) _score ++;
-
-    setState(() {
-      _qIdx ++;
-    });
-  }
-
-  void _reset() {
-    setState(() {
-      _qIdx = 0;
-      _score = 0;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    futureQuestionTable = fetchQuestionTable();
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-            title: Text('Quiz App')
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:
-            [
-              ConditionalBuilder(
-                  condition: _qIdx <= 2,
-                  builder: (context) => FutureBuilder<QuestionTable>(
-                    future: futureQuestionTable,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Quiz(_qIdx, snapshot.data.questions, _answerQuestion);
-                      } else if (snapshot.hasError) {
-                        return Text('sorry');
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    },
-                  ),
-                  fallback: (context) => Finish(_reset, _score),
-              )
-            ],
-          ),
-        )
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomeApp(),
+        '/quiz': (context) => QuizApp(),
+        '/expense': (context) => ExpenseApp(),
+      },
     );
-  }
-}
-
-class QuestionTable {
-  var questions;
-
-  QuestionTable({this.questions});
-
-  factory QuestionTable.fromJson(List <dynamic> json) {
-    return QuestionTable(questions: json);
-  }
-}
-
-Future<QuestionTable> fetchQuestionTable() async {
-  final response =
-  await http.get('http://localhost:3000/api/v1/questions');
-
-  if (response.statusCode == 200) {
-    return QuestionTable.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load questions');
   }
 }
