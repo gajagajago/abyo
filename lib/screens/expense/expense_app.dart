@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'transaction.dart';
+import '../../modals/modal_add_transaction.dart';
 
 class ExpenseApp extends StatefulWidget {
   @override
@@ -43,15 +45,16 @@ class _ExpenseAppState extends State<ExpenseApp> {
               future: transactions,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Container(
-                    width: double.infinity,
-                    child: Column(
+                  return Expanded(
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
                       children: [
                         ...(snapshot.data.transactions as List<dynamic>)
                             .map((t) => Transaction(t))
                       ],
                     ),
-                  );;
+                  );
                 } else if (snapshot.hasError) {
                   return Text('sorry');
                 } else {
@@ -60,6 +63,14 @@ class _ExpenseAppState extends State<ExpenseApp> {
               },
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showMaterialModalBottomSheet(
+            context: context,
+            builder: (context) => ModalAddTransaction(),
+          ),
+          child: Icon(Icons.add_rounded),
+          backgroundColor: Colors.blue,
         ),
       ),
     );
@@ -82,7 +93,6 @@ Future<TransactionTable> fetchTransactionTable() async {
   await http.get(url);
 
   if (response.statusCode == 200) {
-    print(response.body);
     return TransactionTable.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to load transactions');

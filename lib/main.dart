@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'screens/home/home_app.dart';
 import 'screens/quiz/quiz_app.dart';

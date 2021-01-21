@@ -30,6 +30,9 @@ dependencies:
   cupertino_icons: ^1.0.0
   conditional_builder: ^1.0.2
   http: ^0.12.2
+  intl: ^0.16.1
+  modal_bottom_sheet: ^1.0.0+1
+  flutter_form_builder: ^4.2.0
 
 dev_dependencies:
   flutter_test:
