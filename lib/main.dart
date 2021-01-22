@@ -3,7 +3,7 @@ import 'screens/home/home_app.dart';
 import 'screens/user_auth/sign_up.dart';
 import 'screens/user_auth/sign_in.dart';
 import 'screens/quiz/quiz_app.dart';
-import 'screens/expense/expense_app.dart';
+import 'screens/asset_app/asset_app.dart';
 
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUp(),
         '/sign_in': (context) => SignIn(),
         '/quiz': (context) => QuizApp(),
-        '/expense': (context) => ExpenseApp(),
+        '/asset': (context) => AssetApp(),
       },
     );
   }

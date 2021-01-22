@@ -38,8 +38,8 @@ class _HomeAppState extends State<HomeApp> {
                 onPressed: () => Navigator.pushNamed(context, '/quiz'),
               ),
               RaisedButton(
-                child: Text('Expense App'),
-                onPressed: () => Navigator.pushNamed(context, '/expense'),
+                child: Text('Asset App'),
+                onPressed: () => Navigator.pushNamed(context, '/asset'),
               )
             ],
           ),
