@@ -11,6 +11,14 @@ class HomeApp extends StatelessWidget {
         child: Column(
           children: [
             RaisedButton(
+              child: Text('Sign Up'),
+              onPressed: () => Navigator.pushNamed(context, '/sign_up'),
+            ),
+            RaisedButton(
+              child: Text('Sign In'),
+              onPressed: () => Navigator.pushNamed(context, '/sign_in'),
+            ),
+            RaisedButton(
               child: Text('Quiz App'),
               onPressed: () => Navigator.pushNamed(context, '/quiz'),
             ),
