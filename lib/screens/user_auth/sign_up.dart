@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
+import 'package:flutter_session/flutter_session.dart';
 
 class SignUp extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -60,7 +61,11 @@ class SignUp extends StatelessWidget {
                   FlatButton(
                       onPressed: () => {
                         if (_formKey.currentState.saveAndValidate()) {
-                          signUp(_formKey.currentState.value)
+                          signUp(_formKey.currentState.value).then((value) => {
+                            if (value) {
+                              Navigator.of(context).pop(true)
+                            }
+                          })
                         }
                       },
                       child: Text('Submit')
@@ -75,7 +80,7 @@ class SignUp extends StatelessWidget {
   }
 }
 
-Future<String> signUp(var params) async {
+Future<bool> signUp(var params) async {
   final String url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/sign_up' : 'http://127.0.0.1:3000/api/v1/sign_up';
 
   final response = await http.post(
@@ -84,5 +89,16 @@ Future<String> signUp(var params) async {
       body: jsonEncode(params)
   );
 
-  return '$response';
+  if (response.statusCode == 200) {
+    print('Arrived at here');
+    return saveAuthToken(jsonDecode(response.body)['authentication_token']);
+  } else {
+    return false;
+  }
+}
+
+Future<bool> saveAuthToken(String authToken) async {
+  await FlutterSession().set('authentication_token', authToken);
+
+  return FlutterSession().get('authentication_token') != null;
 }
