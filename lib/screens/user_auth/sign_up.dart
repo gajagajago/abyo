@@ -63,7 +63,7 @@ class SignUp extends StatelessWidget {
                         if (_formKey.currentState.saveAndValidate()) {
                           signUp(_formKey.currentState.value).then((value) => {
                             if (value) {
-                              Navigator.of(context).pop(true)
+                              Navigator.of(context).pushReplacementNamed('/')
                             }
                           })
                         }
@@ -90,7 +90,6 @@ Future<bool> signUp(var params) async {
   );
 
   if (response.statusCode == 200) {
-    print('Arrived at here');
     return saveAuthToken(jsonDecode(response.body)['authentication_token']);
   } else {
     return false;

@@ -22,6 +22,11 @@ class _HomeAppState extends State<HomeApp> {
     return await FlutterSession().get('authentication_token');
   }
 
+  Future<void> signOut() async {
+    await FlutterSession().set('authentication_token', '');
+    Navigator.of(context).pushReplacementNamed('/');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,34 +34,52 @@ class _HomeAppState extends State<HomeApp> {
           title: Text('Home'),
         ),
       body: Container(
-        child: ConditionalBuilder(
-          condition: authenticationToken != null,
-          builder: (context) => Column(
-            children: [
-              RaisedButton(
-                child: Text('Quiz App'),
-                onPressed: () => Navigator.pushNamed(context, '/quiz'),
-              ),
-              RaisedButton(
-                child: Text('Asset App'),
-                onPressed: () => Navigator.pushNamed(context, '/asset'),
-              )
-            ],
-          ),
-          fallback: (context) => Column(
-            children: [
-              RaisedButton(
-                child: Text('Sign Up'),
-                onPressed: () => Navigator.pushNamed(context, '/sign_up'),
-              ),
-              RaisedButton(
-                child: Text('Sign In'),
-                onPressed: () => Navigator.pushNamed(context, '/sign_in'),
-              ),
-            ],
-          ),
-        ),
+        child: FutureBuilder(
+          future: authenticationToken,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ConditionalBuilder(
+                condition: snapshot.data.length > 0,
+                builder: (context) => Column(
+                  children: [
+                    RaisedButton(
+                      child: Text('Quiz App'),
+                      onPressed: () => Navigator.pushNamed(context, '/quiz'),
+                    ),
+                    RaisedButton(
+                      child: Text('Asset App'),
+                      onPressed: () => Navigator.pushNamed(context, '/asset'),
+                    ),
+                    RaisedButton(
+                      child: Text('Sign out'),
+                      onPressed: () => signOut(),
+                    )
+                  ],
+                ),
+                fallback: (context) => Column(
+                    children: [
+                      RaisedButton(
+                        child: Text('Sign Up'),
+                        onPressed: () => Navigator.pushNamed(context, '/sign_up'),
+                      ),
+                      RaisedButton(
+                        child: Text('Sign In'),
+                        onPressed: () => Navigator.pushNamed(context, '/sign_in'),
+                      ),
+                    ]
+                )
+              );
+            }
+            else {
+              return CircularProgressIndicator();
+            }
+          }
+        )
       ),
     );
   }
 }
+//
+// Future<void> signOut() async {
+//   await FlutterSession().set('authentication_token', null);
+// }

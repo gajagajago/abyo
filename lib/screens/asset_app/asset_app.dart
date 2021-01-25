@@ -40,7 +40,12 @@ class _AssetAppState extends State<AssetApp> {
                 future: assets,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Assets(assets);
+                    return Column(
+                      children: [
+                        Assets(assets),
+
+                      ],
+                    );
                   } else {
                     return CircularProgressIndicator();
                   }
@@ -73,7 +78,7 @@ class _AssetAppState extends State<AssetApp> {
         floatingActionButton: FloatingActionButton(
           onPressed: () => showMaterialModalBottomSheet(
             context: context,
-            builder: (context) => ModalAddTransaction(),
+            builder: (context) => ModalAddTransaction(assets),
           ),
           child: Icon(Icons.add_rounded),
           backgroundColor: Colors.blue,
@@ -92,8 +97,6 @@ Future<List<dynamic>> fetchAssets() async {
   );
 
   if (response.statusCode == 200) {
-    print('fetched asset info');
-    print(response.body);
     return jsonDecode(response.body);
   } else {
     return null;

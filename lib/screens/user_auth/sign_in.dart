@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_quiz/screens/home/home_app.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
@@ -51,7 +52,7 @@ class SignIn extends StatelessWidget {
                             if (_formKey.currentState.saveAndValidate()) {
                               signIn(_formKey.currentState.value).then((value) => {
                                 if (value) {
-                                  Navigator.of(context).pop(true)
+                                  Navigator.of(context).pushReplacementNamed('/')
                                 }
                               })
                             }
@@ -78,7 +79,6 @@ Future<bool> signIn(var params) async {
   );
 
   if (response.statusCode == 200) {
-    print('Arrived at here');
     return saveAuthToken(jsonDecode(response.body)['authentication_token']);
   } else {
     return false;
@@ -86,6 +86,7 @@ Future<bool> signIn(var params) async {
 }
 
 Future<bool> saveAuthToken(String authToken) async {
+  print(authToken);
   await FlutterSession().set('authentication_token', authToken);
 
   return FlutterSession().get('authentication_token') != null;

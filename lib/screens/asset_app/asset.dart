@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../helpers/helper_function.dart';
 
 class Asset extends StatelessWidget {
   final Map<String, dynamic> asset;
@@ -13,7 +14,7 @@ class Asset extends StatelessWidget {
           setIcon(asset['category']),
           Container(
             margin: EdgeInsets.only(left: 10),
-            child: Text('${asset['amount']} 원')
+            child: Text('${HelperFunction().moneyFormatter(currency: 'krw', amount: asset['amount'])}')
           )
         ],
       )
@@ -22,7 +23,9 @@ class Asset extends StatelessWidget {
 }
 
 Icon setIcon(String category) {
-  if (category == 'stock') {
+  if (category == 'credit') {
+    return Icon(Icons.credit_card);
+  } else if (category == 'stock') {
     return Icon(Icons.monetization_on_outlined);
   } else if (category == 'real_estate') {
     return Icon(Icons.apartment);
@@ -34,20 +37,3 @@ Icon setIcon(String category) {
     return Icon(Icons.more_horiz);
   }
 }
-
-// class _AssetState extends State<Asset> {
-//   var asset;
-//
-//   _AssetState(asset);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Text('item'),
-//         Text(asset['category'])
-//         // Text(asset['amount'])
-//       ],
-//     );
-//   }
-// }

@@ -34,7 +34,9 @@ dependencies:
   modal_bottom_sheet: ^1.0.0+1
   flutter_form_builder: ^4.2.0
   flutter_session: ^0.1.1
-
+  flutter_money_formatter:
+    git:
+      url: git://github.com/anisalibegic/flutter_money_formatter.git
 dev_dependencies:
   flutter_test:
     sdk: flutter
