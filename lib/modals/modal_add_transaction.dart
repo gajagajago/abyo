@@ -7,109 +7,99 @@ import '../helpers/helper_function.dart';
 
 class ModalAddTransaction extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
-  final Future<List<dynamic>> assets;
+  final List<dynamic> assets;
 
   ModalAddTransaction(this.assets);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Wrap(
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        bottom: 300,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          FutureBuilder(
-            future: assets,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    FormBuilder(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          FormBuilderChoiceChip(
-                            name: 'category',
-                            decoration: InputDecoration(
-                              labelText: '자산 종류',
-                            ),
-                            options: [
-                              ...(snapshot.data as List).map((a) =>
-                                  FormBuilderFieldOption(
-                                      value: a['id'],
-                                      child: Text(HelperFunction().assetCategory(a['category']))
-                                  )
-                              )
-                            ],
-                          ),
-                          FormBuilderTextField(
-                            name: 'title',
-                            decoration: InputDecoration(
-                              labelText: '항목',
-                            ),
-                            valueTransformer: (text) => text.trim(),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                              FormBuilderValidators.max(context, 70),
-                            ]),
-                            keyboardType: TextInputType.text,
-                          ),
-                          FormBuilderTextField(
-                            name: 'amount',
-                            decoration: InputDecoration(
-                              labelText: '금액',
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                              FormBuilderValidators.numeric(context),
-                            ]),
-                            keyboardType: TextInputType.text,
-                          ),
-                          FormBuilderTextField(
-                            name: 'date',
-                            decoration: InputDecoration(
-                              labelText: '시간',
-                            ),
-                            // onChanged: _onChanged,
-                            // valueTransformer: (text) => num.tryParse(text),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                              FormBuilderValidators.max(context, 70),
-                            ]),
-                            keyboardType: TextInputType.text,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              MaterialButton(
-                                child: Text("저장"),
-                                onPressed: () {
-                                  if (_formKey.currentState.saveAndValidate()) {
-                                    createTransaction(_formKey.currentState.value).then((value) => {
-                                      Navigator.of(context).popAndPushNamed('/asset')
-                                    });
-                                  }
-                                },
-                              ),
-                              MaterialButton(
-                                child: Text("초기화"),
-                                onPressed: () {
-                                  _formKey.currentState.reset();
-                                },
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+          FormBuilder(
+            key: _formKey,
+            child: Column(
+              children: [
+                FormBuilderChoiceChip(
+                  name: 'category',
+                  decoration: InputDecoration(
+                    labelText: '자산 종류',
+                  ),
+                  options: [
+                    ...assets.map((a) =>
+                        FormBuilderFieldOption(
+                            value: a['id'],
+                            child: Text(HelperFunction().assetCategory(a['category']))
+                        )
                     )
                   ],
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
+                ),
+                FormBuilderTextField(
+                  name: 'title',
+                  decoration: InputDecoration(
+                    labelText: '항목',
+                  ),
+                  valueTransformer: (text) => text.trim(),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(context),
+                    FormBuilderValidators.max(context, 70),
+                  ]),
+                  keyboardType: TextInputType.text,
+                ),
+                FormBuilderTextField(
+                  name: 'amount',
+                  decoration: InputDecoration(
+                    labelText: '금액',
+                  ),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(context),
+                    FormBuilderValidators.numeric(context),
+                  ]),
+                  keyboardType: TextInputType.text,
+                ),
+                FormBuilderTextField(
+                  name: 'date',
+                  decoration: InputDecoration(
+                    labelText: '시간',
+                  ),
+                  // onChanged: _onChanged,
+                  // valueTransformer: (text) => num.tryParse(text),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(context),
+                    FormBuilderValidators.max(context, 70),
+                  ]),
+                  keyboardType: TextInputType.text,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    MaterialButton(
+                      child: Text("저장"),
+                      onPressed: () {
+                        if (_formKey.currentState.saveAndValidate()) {
+                          createTransaction(_formKey.currentState.value).then((value) => {
+                            Navigator.of(context).popAndPushNamed('/asset')
+                          });
+                        }
+                      },
+                    ),
+                    MaterialButton(
+                      child: Text("초기화"),
+                      onPressed: () {
+                        _formKey.currentState.reset();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
           )
         ],
-      ),
+      )
     );
   }
 }

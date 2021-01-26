@@ -35,43 +35,55 @@ class _AssetAppState extends State<AssetApp> {
         appBar: AppBar(
           title: Text('내 자산관리'),
         ),
-        body: Column(
-          children: [
-            FutureBuilder(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              FutureBuilder(
+                future: assets,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Assets(snapshot.data as List<dynamic>);
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+              FutureBuilder(
+                future: transactions,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      height: 650, // should alter later
+                      width: double.infinity,
+                      child: ListView.builder(
+                        itemBuilder: (context, idx) {
+                          return Transaction(snapshot.data[idx]);
+                        },
+                        itemCount: snapshot.data.length,
+                      ),
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              )
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => FutureBuilder(
               future: assets,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Assets(snapshot.data as List<dynamic>);
+                  return ModalAddTransaction(snapshot.data as List<dynamic>);
                 } else {
                   return CircularProgressIndicator();
                 }
-              },
+              }
             ),
-            FutureBuilder(
-              future: transactions,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Container(
-                    height: 650, // should alter later
-                    width: double.infinity,
-                    child: ListView.builder(
-                      itemBuilder: (context, idx) {
-                        return Transaction(snapshot.data[idx]);
-                      },
-                      itemCount: snapshot.data.length,
-                    ),
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => showMaterialModalBottomSheet(
-            context: context,
-            builder: (context) => ModalAddTransaction(assets),
           ),
           child: Icon(Icons.add_rounded),
           backgroundColor: Colors.blue,
@@ -105,7 +117,6 @@ Future<List<dynamic>> fetchTransactions() async {
   );
 
   if (response.statusCode == 200) {
-    print((jsonDecode(response.body) as List<dynamic>).length);
     return jsonDecode(response.body);
   } else {
     return null;
