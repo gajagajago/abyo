@@ -5,6 +5,7 @@ import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'assets.dart';
+import 'transaction.dart';
 import '../../modals/modal_add_transaction.dart';
 
 class AssetApp extends StatefulWidget {
@@ -16,13 +17,15 @@ class AssetApp extends StatefulWidget {
 
 class _AssetAppState extends State<AssetApp> {
   Future<List<dynamic>> assets;
+  Future<List<dynamic>> transactions;
 
-  _AssetAppState({this.assets});
+  _AssetAppState({this.assets, this.transactions});
 
   @override
   void initState() {
     super.initState();
     assets = fetchAssets();
+    transactions = fetchTransactions();
   }
 
   @override
@@ -30,7 +33,7 @@ class _AssetAppState extends State<AssetApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Asset App'),
+          title: Text('내 자산관리'),
         ),
         body: Column(
           children: [
@@ -42,8 +45,7 @@ class _AssetAppState extends State<AssetApp> {
                   if (snapshot.hasData) {
                     return Column(
                       children: [
-                        Assets(assets),
-
+                        Assets(assets)
                       ],
                     );
                   } else {
@@ -52,27 +54,24 @@ class _AssetAppState extends State<AssetApp> {
                 },
               )
             ),
-            // FutureBuilder<TransactionTable>(
-            //   future: transactions,
-            //   builder: (context, snapshot) {
-            //     if (snapshot.hasData) {
-            //       return Expanded(
-            //         child: ListView(
-            //           scrollDirection: Axis.vertical,
-            //           shrinkWrap: true,
-            //           children: [
-            //             ...(snapshot.data.transactions as List<dynamic>)
-            //                 .map((t) => Transaction(t))
-            //           ],
-            //         ),
-            //       );
-            //     } else if (snapshot.hasError) {
-            //       return Text('sorry');
-            //     } else {
-            //       return CircularProgressIndicator();
-            //     }
-            //   },
-            // ),
+            Container(
+                width: double.infinity,
+                child: FutureBuilder(
+                  future: transactions,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          ...(snapshot.data as List<dynamic>)
+                              .map((e) => Transaction(e))
+                        ],
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                )
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -94,6 +93,21 @@ Future<List<dynamic>> fetchAssets() async {
   final response = await http.get(
     url,
     headers: { 'AUTH-TOKEN': authToken }
+  );
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    return null;
+  }
+}
+
+Future<List<dynamic>> fetchTransactions() async {
+  var url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/transactions' : 'http://127.0.0.1:3000/api/v1/transactions';
+  var authToken = await FlutterSession().get('authentication_token');
+  final response = await http.get(
+      url,
+      headers: { 'AUTH-TOKEN': authToken }
   );
 
   if (response.statusCode == 200) {

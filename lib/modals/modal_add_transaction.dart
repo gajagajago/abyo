@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import '../helpers/helper_function.dart';
 
 class ModalAddTransaction extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -35,13 +35,16 @@ class ModalAddTransaction extends StatelessWidget {
                             options: [
                               ...(snapshot.data as List).map((a) =>
                                   FormBuilderFieldOption(
-                                      value: a['id'], child: Text(a['category'])))
+                                      value: a['id'],
+                                      child: Text(HelperFunction().assetCategory(a['category']))
+                                  )
+                              )
                             ],
                           ),
                           FormBuilderTextField(
                             name: 'title',
                             decoration: InputDecoration(
-                              labelText: 'title',
+                              labelText: '항목',
                             ),
                             valueTransformer: (text) => text.trim(),
                             validator: FormBuilderValidators.compose([
@@ -53,7 +56,7 @@ class ModalAddTransaction extends StatelessWidget {
                           FormBuilderTextField(
                             name: 'amount',
                             decoration: InputDecoration(
-                              labelText: 'amount',
+                              labelText: '금액',
                             ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context),
@@ -64,7 +67,7 @@ class ModalAddTransaction extends StatelessWidget {
                           FormBuilderTextField(
                             name: 'date',
                             decoration: InputDecoration(
-                              labelText: 'date',
+                              labelText: '시간',
                             ),
                             // onChanged: _onChanged,
                             // valueTransformer: (text) => num.tryParse(text),
@@ -78,7 +81,7 @@ class ModalAddTransaction extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               MaterialButton(
-                                child: Text("Submit"),
+                                child: Text("저장"),
                                 onPressed: () {
                                   if (_formKey.currentState.saveAndValidate()) {
                                     createTransaction(_formKey.currentState.value).then((value) => {
@@ -88,7 +91,7 @@ class ModalAddTransaction extends StatelessWidget {
                                 },
                               ),
                               MaterialButton(
-                                child: Text("Reset"),
+                                child: Text("초기화"),
                                 onPressed: () {
                                   _formKey.currentState.reset();
                                 },

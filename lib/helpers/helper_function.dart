@@ -25,4 +25,23 @@ class HelperFunction {
         return '';
     }
   }
+
+  String assetCategory(category) {
+    switch(category) {
+      case 'credit':
+        return '카드';
+      case 'stock':
+        return '주식';
+      case 'real_estate':
+        return '부동산';
+      case 'bank':
+        return '은행';
+      case 'cash':
+        return '현금';
+      case 'etc':
+        return '기타';
+      default:
+        return '';
+    }
+  }
 }
