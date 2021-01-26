@@ -37,41 +37,35 @@ class _AssetAppState extends State<AssetApp> {
         ),
         body: Column(
           children: [
-            Container(
-              width: double.infinity,
-              child: FutureBuilder(
-                future: assets,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        Assets(assets)
-                      ],
-                    );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
-              )
+            FutureBuilder(
+              future: assets,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Assets(snapshot.data as List<dynamic>);
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
             ),
-            Container(
-                width: double.infinity,
-                child: FutureBuilder(
-                  future: transactions,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          ...(snapshot.data as List<dynamic>)
-                              .map((e) => Transaction(e))
-                        ],
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                )
-            ),
+            FutureBuilder(
+              future: transactions,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    height: 650, // should alter later
+                    width: double.infinity,
+                    child: ListView.builder(
+                      itemBuilder: (context, idx) {
+                        return Transaction(snapshot.data[idx]);
+                      },
+                      itemCount: snapshot.data.length,
+                    ),
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            )
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -111,6 +105,7 @@ Future<List<dynamic>> fetchTransactions() async {
   );
 
   if (response.statusCode == 200) {
+    print((jsonDecode(response.body) as List<dynamic>).length);
     return jsonDecode(response.body);
   } else {
     return null;
