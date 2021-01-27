@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import '../helpers/helper_function.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import '../commons/date_picker_text_button.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   final List<dynamic> assets;
@@ -21,10 +21,8 @@ class ModalAddTransaction extends StatefulWidget {
 class _ModalAddTransactionState extends State<ModalAddTransaction> {
   final _formKey = GlobalKey<FormBuilderState>();
 
-  String _formKeyTime() {
-    var time = _formKey.currentState.fields['time'].value;
-
-    return time != null ? time : '';
+  void changeFormKey(String field, String data) {
+    _formKey.currentState.fields[field].didChange(data);
   }
 
   @override
@@ -92,23 +90,7 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
                           labelText: "일자",
                           errorText: field.errorText,
                         ),
-                        child: Container(
-                          child: TextButton(
-                            style: TextButton.styleFrom(),
-                            onPressed: () {
-                              DatePicker.showDatePicker(context,
-                                  showTitleActions: true,
-                                  minTime: DateTime.now().subtract(Duration(days: 365 * 10)),
-                                  maxTime: DateTime.now().add(Duration(days: 365 * 10)),
-                                  onConfirm: (date) {
-                                    _formKey.currentState.fields['time'].didChange(DateFormat("yyyy-MM-dd").format(date).toString());
-                                  },
-                                  currentTime: DateTime.now(),
-                                  locale: LocaleType.ko);
-                            },
-                            child: Text(_formKeyTime()),
-                          ),
-                        )
+                        child: DatePickerTextButton(changeFormKey)
                       );
                     },
                   ),
@@ -142,14 +124,6 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
         )
       )
     );
-  }
-}
-
-String dateStringify(date) {
-  if (date != null) {
-    return DateFormat("yyyy-MM-dd").format(date).toString();
-  } else {
-    return '';
   }
 }
 
