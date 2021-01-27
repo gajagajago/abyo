@@ -4,26 +4,35 @@ class HelperFunction {
   String moneyFormatter({String currency, double amount}) {
     switch(currency) {
       case 'krw':
-        String res = '${amount.toInt()}';
-        // String won = money.substring(-1, -4);
-        // String man = money.substring(-5, -8);
-        // String eok = money.substring(-9);
-        // String res;
-        //
-        // if(man != null) {
-        //   res = man + '만 ' + won;
-        // }
-        //
-        // if(eok != null) {
-        //   res = eok + '억 ' + res;
-        // }
+        bool minus = amount < 0;
+        String res = '${amount.toInt().abs()}';
 
-        return res + '원';
+        if (res.length >= 9) {
+          String eok = replaceZeros(res.substring(0, res.length - 8));
+          String man = replaceZeros(res.substring(res.length - 8, res.length - 4));
+          String won = replaceZeros(res.substring(res.length - 4));
+          return minus? '-$eok억 $man만 $won원' : '$eok억 $man만 $won원';
+        } else if (res.length >= 5) {
+          String man = replaceZeros(res.substring(0, res.length - 4));
+          String won = replaceZeros(res.substring(res.length - 4));
+          return minus? '-$man만 $won원' : '$man만 $won원';
+        } else {
+          return minus? '-$res원' : '$res원';
+        }
+        break;
       case 'usd':
         return FlutterMoneyFormatter(amount: amount).output.compactSymbolOnLeft;
       default:
         return '';
     }
+  }
+
+  String replaceZeros(String digit) {
+    while(digit.startsWith(new RegExp(r'0'))) {
+      digit = digit.replaceFirst(new RegExp(r'0'), '');
+    }
+
+    return digit;
   }
 
   String assetCategory(category) {
