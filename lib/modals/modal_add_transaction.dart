@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
 import '../helpers/helper_function.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   final List<dynamic> assets;
@@ -18,6 +20,12 @@ class ModalAddTransaction extends StatefulWidget {
 
 class _ModalAddTransactionState extends State<ModalAddTransaction> {
   final _formKey = GlobalKey<FormBuilderState>();
+
+  String _formKeyTime() {
+    var time = _formKey.currentState.fields['time'].value;
+
+    return time != null ? time : '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,18 +81,36 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
                     ]),
                     keyboardType: TextInputType.number,
                   ),
-                  FormBuilderTextField(
-                    name: 'date',
-                    decoration: InputDecoration(
-                      labelText: '시간',
-                    ),
-                        // onChanged: _onChanged,
-                    // valueTransformer: (text) => num.tryParse(text),
+                  FormBuilderField(
+                    name: "time",
                     validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 70),
+                      FormBuilderValidators.required(context)
                     ]),
-                    keyboardType: TextInputType.text,
+                    builder: (FormFieldState<dynamic> field) {
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                          labelText: "일자",
+                          errorText: field.errorText,
+                        ),
+                        child: Container(
+                          child: TextButton(
+                            style: TextButton.styleFrom(),
+                            onPressed: () {
+                              DatePicker.showDatePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime.now().subtract(Duration(days: 365 * 10)),
+                                  maxTime: DateTime.now().add(Duration(days: 365 * 10)),
+                                  onConfirm: (date) {
+                                    _formKey.currentState.fields['time'].didChange(DateFormat("yyyy-MM-dd").format(date).toString());
+                                  },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.ko);
+                            },
+                            child: Text(_formKeyTime()),
+                          ),
+                        )
+                      );
+                    },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -119,7 +145,16 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
   }
 }
 
+String dateStringify(date) {
+  if (date != null) {
+    return DateFormat("yyyy-MM-dd").format(date).toString();
+  } else {
+    return '';
+  }
+}
+
 Future<bool> createTransaction(var params) async {
+  print(params);
   var url = Platform.isAndroid
       ? 'http://10.0.2.2:3000/api/v1/assets/${params['category']}/transactions'
       : 'http://127.0.0.1:3000/api/v1/assets/${params['category']}/transactions';

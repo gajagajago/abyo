@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../helpers/helper_function.dart';
 
 class Transaction extends StatelessWidget {
@@ -21,6 +22,7 @@ class Transaction extends StatelessWidget {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 HelperFunction().assetCategory(transaction['asset_category']),
@@ -29,7 +31,7 @@ class Transaction extends StatelessWidget {
                 ),
               ),
               Text(
-                'time',
+                DateFormat("yyyy-MM-dd").format(DateTime.parse(transaction['time'])),
                 style: TextStyle(
                   color: Colors.grey
                 ),
