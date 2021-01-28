@@ -31,7 +31,6 @@ class Assets extends StatelessWidget {
           ],
         ),
         child: Container(
-          height: 100,
           child: GridView.count(
             crossAxisCount: 2,
             childAspectRatio: 5.5,

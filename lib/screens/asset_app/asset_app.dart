@@ -7,6 +7,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'assets.dart';
 import 'transaction.dart';
 import '../../modals/modal_add_transaction.dart';
+import '../../commons/app_bar.dart';
 
 class AssetApp extends StatefulWidget {
   @override
@@ -30,43 +31,46 @@ class _AssetAppState extends State<AssetApp> {
 
   @override
   Widget build(BuildContext context) {
+    final _appBar = appBar(title: '내 자산관리');
+
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('내 자산관리'),
-        ),
+        appBar: _appBar,
         body: SingleChildScrollView(
           child: Column(
             children: [
-              FutureBuilder(
-                future: assets,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Assets(snapshot.data as List<dynamic>);
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
+              Container(
+                height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.17,
+                child: FutureBuilder(
+                  future: assets,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Assets(snapshot.data as List<dynamic>);
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
               ),
-              FutureBuilder(
-                future: transactions,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Container(
-                      height: 650, // should alter later
-                      width: double.infinity,
-                      child: ListView.builder(
+              Container(
+                width: double.infinity,
+                height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.83,
+                child: FutureBuilder(
+                  future: transactions,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
                         itemBuilder: (context, idx) {
                           return Transaction(snapshot.data[idx]);
                         },
                         itemCount: snapshot.data.length,
-                      ),
-                    );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
-              )
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                )
+              ),
             ],
           ),
         ),

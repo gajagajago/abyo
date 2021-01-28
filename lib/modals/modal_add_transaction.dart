@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:intl/intl.dart';
 import '../helpers/helper_function.dart';
 import '../commons/date_picker_text_button.dart';
 
@@ -128,7 +127,6 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
 }
 
 Future<bool> createTransaction(var params) async {
-  print(params);
   var url = Platform.isAndroid
       ? 'http://10.0.2.2:3000/api/v1/assets/${params['category']}/transactions'
       : 'http://127.0.0.1:3000/api/v1/assets/${params['category']}/transactions';

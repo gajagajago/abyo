@@ -86,7 +86,6 @@ Future<bool> signIn(var params) async {
 }
 
 Future<bool> saveAuthToken(String authToken) async {
-  print(authToken);
   await FlutterSession().set('authentication_token', authToken);
 
   return FlutterSession().get('authentication_token') != null;

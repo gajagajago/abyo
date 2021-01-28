@@ -71,7 +71,18 @@ class _HomeAppState extends State<HomeApp> {
               );
             }
             else {
-              return CircularProgressIndicator();
+              return Column(
+                  children: [
+                    RaisedButton(
+                      child: Text('Sign Up'),
+                      onPressed: () => Navigator.pushNamed(context, '/sign_up'),
+                    ),
+                    RaisedButton(
+                      child: Text('Sign In'),
+                      onPressed: () => Navigator.pushNamed(context, '/sign_in'),
+                    ),
+                  ]
+              );
             }
           }
         )
@@ -79,7 +90,3 @@ class _HomeAppState extends State<HomeApp> {
     );
   }
 }
-//
-// Future<void> signOut() async {
-//   await FlutterSession().set('authentication_token', null);
-// }

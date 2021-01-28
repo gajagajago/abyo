@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../helpers/helper_function.dart';
@@ -7,52 +10,75 @@ class Transaction extends StatelessWidget {
 
   Transaction(this.transaction);
 
+  Future<void> destroyTransaction() async {
+    var url = Platform.isAndroid
+        ? 'http://10.0.2.2:3000/api/v1/assets/${transaction['asset']['id']}/transactions/${transaction['id']}'
+        : 'http://127.0.0.1:3000/api/v1/assets/${transaction['asset']['id']}/transactions/${transaction['id']}';
+
+    final response = await http.delete(url);
+
+    return response.statusCode == 200;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4
+    return Dismissible(
+      key: Key(transaction['id'].toString()),
+      background: Container(
+        color: Colors.red,
+        padding: EdgeInsets.symmetric(
+          horizontal: 20
+        ),
+        alignment: AlignmentDirectional.centerEnd,
+        child: Icon(Icons.delete, color: Colors.white),
       ),
-      padding: EdgeInsets.all(8),
-      width: double.infinity,
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                HelperFunction().assetCategory(transaction['asset_category']),
-                style: TextStyle(
-                  fontSize: 16
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) => destroyTransaction(),
+      child: Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4
+        ),
+        padding: EdgeInsets.all(8),
+        width: double.infinity,
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  HelperFunction().assetCategory(transaction['asset']['category']),
+                  style: TextStyle(
+                      fontSize: 16
+                  ),
                 ),
-              ),
-              Text(
-                DateFormat("yyyy-MM-dd").format(DateTime.parse(transaction['time'])),
-                style: TextStyle(
-                  color: Colors.grey
+                Text(
+                  DateFormat("yyyy-MM-dd").format(DateTime.parse(transaction['time'])),
+                  style: TextStyle(
+                      color: Colors.grey
+                  ),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  transaction['title'],
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                  ),
                 ),
-              )
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                transaction['title'],
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              amount(transaction['amount'])
-            ],
-          )
-        ],
-      ),
+                amount(transaction['amount'])
+              ],
+            )
+          ],
+        ),
+      )
     );
   }
 }
