@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 
-AppBar appBar({String title}) {
-  return AppBar(
-    title: Text(title),
-  );
+PreferredSizeWidget appBar({String title}) {
+  if (Platform.isAndroid) {
+    return AppBar(
+      title: Text(title),
+    );
+  } else {
+    return CupertinoNavigationBar(
+      middle: Text(title),
+    );
+  }
 }

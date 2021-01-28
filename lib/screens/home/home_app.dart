@@ -1,6 +1,7 @@
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import '../../commons/app_bar.dart';
 
 class HomeApp extends StatefulWidget {
   @override
@@ -30,9 +31,7 @@ class _HomeAppState extends State<HomeApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-        ),
+      appBar: appBar(title: '홈'),
       body: Container(
         child: FutureBuilder(
           future: authenticationToken,
@@ -42,16 +41,16 @@ class _HomeAppState extends State<HomeApp> {
                 condition: snapshot.data.length > 0,
                 builder: (context) => Column(
                   children: [
+                    // RaisedButton(
+                    //   child: Text('Quiz App'),
+                    //   onPressed: () => Navigator.pushNamed(context, '/quiz'),
+                    // ),
                     RaisedButton(
-                      child: Text('Quiz App'),
-                      onPressed: () => Navigator.pushNamed(context, '/quiz'),
-                    ),
-                    RaisedButton(
-                      child: Text('Asset App'),
+                      child: Text('내 자산관리'),
                       onPressed: () => Navigator.pushNamed(context, '/asset'),
                     ),
                     RaisedButton(
-                      child: Text('Sign out'),
+                      child: Text('로그아웃'),
                       onPressed: () => signOut(),
                     )
                   ],
@@ -59,11 +58,11 @@ class _HomeAppState extends State<HomeApp> {
                 fallback: (context) => Column(
                     children: [
                       RaisedButton(
-                        child: Text('Sign Up'),
+                        child: Text('회원가입'),
                         onPressed: () => Navigator.pushNamed(context, '/sign_up'),
                       ),
                       RaisedButton(
-                        child: Text('Sign In'),
+                        child: Text('로그인'),
                         onPressed: () => Navigator.pushNamed(context, '/sign_in'),
                       ),
                     ]
