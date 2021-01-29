@@ -36,7 +36,7 @@ class _TransactionState extends State<Transaction> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: UniqueKey(),
+      key: ValueKey(widget.transaction['id']),
       background: Container(
         color: Colors.red,
         padding: EdgeInsets.symmetric(

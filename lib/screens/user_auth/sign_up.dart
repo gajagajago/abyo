@@ -64,7 +64,7 @@ class SignUp extends StatelessWidget {
                           })
                         }
                       },
-                      child: Text('Submit')
+                      child: const Text('확인')
                   )
                 ],
               ),

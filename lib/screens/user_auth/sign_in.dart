@@ -55,7 +55,7 @@ class SignIn extends StatelessWidget {
                               })
                             }
                           },
-                          child: Text('확인')
+                          child: const Text('확인')
                       )
                     ],
                   ),

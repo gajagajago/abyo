@@ -26,11 +26,11 @@ Icon setIcon(String category) {
   if (category == 'credit') {
     return Icon(Icons.credit_card);
   } else if (category == 'stock') {
-    return Icon(Icons.monetization_on_outlined);
+    return Icon(Icons.show_chart);
   } else if (category == 'real_estate') {
     return Icon(Icons.apartment);
   } else if (category == 'bank') {
-    return Icon(Icons.atm);
+    return Icon(Icons.account_balance_wallet);
   } else if (category == 'cash') {
     return Icon(Icons.money);
   } else {
