@@ -3,7 +3,6 @@ import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'assets.dart';
 import 'transaction.dart';
 import '../../modals/modal_add_transaction.dart';
@@ -12,21 +11,33 @@ import '../../commons/app_bar.dart';
 class AssetApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _AssetAppState();
+    return AssetAppState();
   }
 }
 
-class _AssetAppState extends State<AssetApp> {
+class AssetAppState extends State<AssetApp> {
   Future<List<dynamic>> assets;
   Future<List<dynamic>> transactions;
 
-  _AssetAppState({this.assets, this.transactions});
+  AssetAppState({this.assets, this.transactions});
 
   @override
   void initState() {
     super.initState();
-    assets = fetchAssets();
-    transactions = fetchTransactions();
+    initAssets();
+    initTransactions();
+  }
+
+  void initAssets() {
+    setState(() {
+      assets = fetchAssets();
+    });
+  }
+
+  void initTransactions() {
+    setState(() {
+      transactions = fetchTransactions();
+    });
   }
 
   @override
@@ -47,7 +58,7 @@ class _AssetAppState extends State<AssetApp> {
                     if (snapshot.hasData) {
                       return Assets(snapshot.data as List<dynamic>);
                     } else {
-                      return CircularProgressIndicator();
+                      return Container();
                     }
                   },
                 ),
@@ -61,12 +72,12 @@ class _AssetAppState extends State<AssetApp> {
                     if (snapshot.hasData) {
                       return ListView.builder(
                         itemBuilder: (context, idx) {
-                          return Transaction(snapshot.data[idx]);
+                          return Transaction(snapshot.data[idx], initAssets, initTransactions);
                         },
                         itemCount: snapshot.data.length,
                       );
                     } else {
-                      return CircularProgressIndicator();
+                      return Container();
                     }
                   },
                 )
@@ -83,9 +94,9 @@ class _AssetAppState extends State<AssetApp> {
               future: assets,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ModalAddTransaction(snapshot.data as List<dynamic>);
+                  return ModalAddTransaction(snapshot.data as List<dynamic>, initAssets, initTransactions);
                 } else {
-                  return CircularProgressIndicator();
+                  return Container();
                 }
               }
             ),

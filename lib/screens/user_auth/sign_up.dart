@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'package:flutter_session/flutter_session.dart';
+import '../../commons/app_bar.dart';
 
 class SignUp extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -12,9 +13,7 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Sign Up'),
-        ),
+        appBar: appBar(title: '회원가입'),
         body: Column(
           children: [
             FormBuilder(
@@ -24,8 +23,7 @@ class SignUp extends StatelessWidget {
                   FormBuilderTextField(
                     name: 'name',
                     decoration: InputDecoration(
-                      labelText:
-                      'name',
+                      labelText: '이름',
                     ),
                     valueTransformer: (text) => text.trim(),
                     validator: FormBuilderValidators.compose([
@@ -36,8 +34,7 @@ class SignUp extends StatelessWidget {
                   FormBuilderTextField(
                     name: 'email',
                     decoration: InputDecoration(
-                      labelText:
-                      'email',
+                      labelText: '이메일',
                     ),
                     valueTransformer: (text) => text.trim(),
                     validator: FormBuilderValidators.compose([
@@ -48,8 +45,7 @@ class SignUp extends StatelessWidget {
                   FormBuilderTextField(
                     name: 'password',
                     decoration: InputDecoration(
-                      labelText:
-                      'password',
+                      labelText: '비밀번호',
                     ),
                     obscureText: true,
                     valueTransformer: (text) => text.trim(),

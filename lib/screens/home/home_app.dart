@@ -11,21 +11,23 @@ class HomeApp extends StatefulWidget {
 }
 
 class _HomeAppState extends State<HomeApp> {
-  Future<String> authenticationToken;
+  Future<dynamic> authenticationToken;
 
   @override
   void initState() {
     super.initState();
-    authenticationToken = initAuthToken();
+    initAuthToken();
   }
 
-  Future<String> initAuthToken() async {
-    return await FlutterSession().get('authentication_token');
+ void initAuthToken() {
+    setState(() {
+      authenticationToken = FlutterSession().get('authentication_token');
+    });
   }
 
   Future<void> signOut() async {
     await FlutterSession().set('authentication_token', '');
-    Navigator.of(context).pushReplacementNamed('/');
+    initAuthToken();
   }
 
   @override
@@ -36,48 +38,28 @@ class _HomeAppState extends State<HomeApp> {
         child: FutureBuilder(
           future: authenticationToken,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ConditionalBuilder(
-                condition: snapshot.data.length > 0,
-                builder: (context) => Column(
-                  children: [
-                    // RaisedButton(
-                    //   child: Text('Quiz App'),
-                    //   onPressed: () => Navigator.pushNamed(context, '/quiz'),
-                    // ),
-                    RaisedButton(
-                      child: Text('내 자산관리'),
-                      onPressed: () => Navigator.pushNamed(context, '/asset'),
+            if (snapshot.hasData && snapshot.data.length > 0) {
+              return Column(
+                children: [
+                  RaisedButton(
+                    child: Text('내 자산관리'),
+                    onPressed: () => Navigator.pushNamed(context, '/asset'),
+                  ),
+                  RaisedButton(
+                    child: Text('로그아웃'),
+                    onPressed: () => signOut()
                     ),
-                    RaisedButton(
-                      child: Text('로그아웃'),
-                      onPressed: () => signOut(),
-                    )
-                  ],
-                ),
-                fallback: (context) => Column(
-                    children: [
-                      RaisedButton(
-                        child: Text('회원가입'),
-                        onPressed: () => Navigator.pushNamed(context, '/sign_up'),
-                      ),
-                      RaisedButton(
-                        child: Text('로그인'),
-                        onPressed: () => Navigator.pushNamed(context, '/sign_in'),
-                      ),
-                    ]
-                )
+                ],
               );
-            }
-            else {
+            } else {
               return Column(
                   children: [
                     RaisedButton(
-                      child: Text('Sign Up'),
+                      child: Text('회원가입'),
                       onPressed: () => Navigator.pushNamed(context, '/sign_up'),
                     ),
                     RaisedButton(
-                      child: Text('Sign In'),
+                      child: Text('로그인'),
                       onPressed: () => Navigator.pushNamed(context, '/sign_in'),
                     ),
                   ]

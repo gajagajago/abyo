@@ -1,29 +1,42 @@
-import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../helpers/helper_function.dart';
 
-class Transaction extends StatelessWidget {
+class Transaction extends StatefulWidget {
   final Map<String, dynamic> transaction;
+  final Function initAssets;
+  final Function initTransactions;
 
-  Transaction(this.transaction);
+  Transaction(this.transaction, this.initAssets, this.initTransactions);
 
+  @override
+  State<StatefulWidget> createState() {
+    return _TransactionState();
+  }
+}
+
+class _TransactionState extends State<Transaction> {
   Future<void> destroyTransaction() async {
     var url = Platform.isAndroid
-        ? 'http://10.0.2.2:3000/api/v1/assets/${transaction['asset']['id']}/transactions/${transaction['id']}'
-        : 'http://127.0.0.1:3000/api/v1/assets/${transaction['asset']['id']}/transactions/${transaction['id']}';
+        ? 'http://10.0.2.2:3000/api/v1/assets/${widget.transaction['asset']['id']}/transactions/${widget.transaction['id']}'
+        : 'http://127.0.0.1:3000/api/v1/assets/${widget.transaction['asset']['id']}/transactions/${widget.transaction['id']}';
 
     final response = await http.delete(url);
 
-    return response.statusCode == 200;
+    if (response.statusCode == 200) {
+      Future.delayed(const Duration(milliseconds: 0), () {
+        widget.initAssets();
+        widget.initTransactions();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(transaction['id'].toString()),
+      key: UniqueKey(),
       background: Container(
         color: Colors.red,
         padding: EdgeInsets.symmetric(
@@ -50,13 +63,13 @@ class Transaction extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  HelperFunction().assetCategory(transaction['asset']['category']),
+                  HelperFunction().assetCategory(widget.transaction['asset']['category']),
                   style: TextStyle(
                       fontSize: 16
                   ),
                 ),
                 Text(
-                  DateFormat("yyyy-MM-dd").format(DateTime.parse(transaction['time'])),
+                  DateFormat("yyyy-MM-dd").format(DateTime.parse(widget.transaction['time'])),
                   style: TextStyle(
                       color: Colors.grey
                   ),
@@ -67,13 +80,13 @@ class Transaction extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  transaction['title'],
+                  widget.transaction['title'],
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold
                   ),
                 ),
-                amount(transaction['amount'])
+                amount(widget.transaction['amount'])
               ],
             )
           ],

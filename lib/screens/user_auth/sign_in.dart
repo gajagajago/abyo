@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_quiz/screens/home/home_app.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'package:flutter_session/flutter_session.dart';
+import '../../commons/app_bar.dart';
 
 class SignIn extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -13,9 +13,7 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-            appBar: AppBar(
-              title: Text('Sign In'),
-            ),
+            appBar: appBar(title: '로그인'),
             body: Column(
               children: [
                 FormBuilder(
@@ -26,7 +24,7 @@ class SignIn extends StatelessWidget {
                         name: 'email',
                         decoration: InputDecoration(
                           labelText:
-                          'email',
+                          '이메일',
                         ),
                         valueTransformer: (text) => text.trim(),
                         validator: FormBuilderValidators.compose([
@@ -38,7 +36,7 @@ class SignIn extends StatelessWidget {
                         name: 'password',
                         decoration: InputDecoration(
                           labelText:
-                          'password',
+                          '비밀번호',
                         ),
                         obscureText: true,
                         valueTransformer: (text) => text.trim(),
@@ -57,7 +55,7 @@ class SignIn extends StatelessWidget {
                               })
                             }
                           },
-                          child: Text('Submit')
+                          child: Text('확인')
                       )
                     ],
                   ),

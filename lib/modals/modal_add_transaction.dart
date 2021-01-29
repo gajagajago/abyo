@@ -9,8 +9,10 @@ import '../commons/date_picker_text_button.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   final List<dynamic> assets;
+  final Function initAssets;
+  final Function initTransactions;
 
-  ModalAddTransaction(this.assets);
+  ModalAddTransaction(this.assets, this.initAssets, this.initTransactions);
 
   @override
   State<StatefulWidget> createState() {
@@ -24,6 +26,29 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
 
   void changeFormKey(String field, String data) {
     _formKey.currentState.fields[field].didChange(data);
+  }
+
+  Future<bool> createTransaction(var params, bool amountPositive) async {
+    Map<String, dynamic> paramsFormat = {
+      'category': params['category'],
+      'title': params['title'],
+      'amount': amountPositive ? params['amount'] : '-${params['amount']}',
+      'time': params['time']
+    };
+
+    var url = Platform.isAndroid
+        ? 'http://10.0.2.2:3000/api/v1/assets/${paramsFormat['category']}/transactions'
+        : 'http://127.0.0.1:3000/api/v1/assets/${paramsFormat['category']}/transactions';
+
+    final response = await http.post(url,
+        headers: {'Content-Type': "application/json"}, body: jsonEncode(paramsFormat));
+
+    if (response.statusCode == 200) {
+      widget.initAssets();
+      widget.initTransactions();
+    }
+
+    return response.statusCode == 200;
   }
 
   @override
@@ -137,8 +162,7 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
                               if (_formKey.currentState.saveAndValidate()) {
                                 createTransaction(_formKey.currentState.value, amountPositive)
                                     .then((value) => {
-                                          Navigator.of(context)
-                                              .popAndPushNamed('/asset')
+                                          Navigator.of(context).pop()
                                         });
                               }
                             },
@@ -159,22 +183,4 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
         )
     );
   }
-}
-
-Future<bool> createTransaction(var params, bool amountPositive) async {
-  Map<String, dynamic> paramsFormat = {
-    'category': params['category'],
-    'title': params['title'],
-    'amount': amountPositive ? params['amount'] : '-${params['amount']}',
-    'time': params['time']
-  };
-
-  var url = Platform.isAndroid
-      ? 'http://10.0.2.2:3000/api/v1/assets/${paramsFormat['category']}/transactions'
-      : 'http://127.0.0.1:3000/api/v1/assets/${paramsFormat['category']}/transactions';
-
-  final response = await http.post(url,
-      headers: {'Content-Type': "application/json"}, body: jsonEncode(paramsFormat));
-
-  return response.statusCode == 200;
 }
