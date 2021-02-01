@@ -42,28 +42,27 @@ class AssetAppState extends State<AssetApp> {
 
   @override
   Widget build(BuildContext context) {
-    final _appBar = appBar(title: '내 자산관리');
+    final _appBar = appBar(title: '자산관리');
 
-    return MaterialApp(
-      home: Scaffold(
-        appBar: _appBar,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.17,
-                child: FutureBuilder(
-                  future: assets,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Assets(snapshot.data as List<dynamic>);
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
+    return Scaffold(
+      appBar: _appBar,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.17,
+              child: FutureBuilder(
+                future: assets,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Assets(snapshot.data as List<dynamic>);
+                  } else {
+                    return Container();
+                  }
+                },
               ),
-              Container(
+            ),
+            Container(
                 width: double.infinity,
                 height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.83,
                 child: FutureBuilder(
@@ -81,16 +80,16 @@ class AssetAppState extends State<AssetApp> {
                     }
                   },
                 )
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            context: context,
-            isScrollControlled: true,
-            builder: (context) => FutureBuilder(
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => FutureBuilder(
               future: assets,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -99,11 +98,10 @@ class AssetAppState extends State<AssetApp> {
                   return Container();
                 }
               }
-            ),
           ),
-          child: Icon(Icons.add_rounded),
-          backgroundColor: Colors.blue,
         ),
+        child: Icon(Icons.add_rounded),
+        backgroundColor: Colors.blue,
       ),
     );
   }
