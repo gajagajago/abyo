@@ -31,14 +31,14 @@ class Assets extends StatelessWidget {
           ],
         ),
         child: Container(
-          child: GridView.count(
-            crossAxisCount: 2,
-            childAspectRatio: 5.5,
-            shrinkWrap: true,
+          child: GridView(
             children: [
-              ...(assets)
-                  .map((e) => Asset(e))
+              ...(assets).map((e) => Asset(e))
             ],
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 10/2,
+            ),
           ),
         )
     );

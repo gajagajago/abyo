@@ -11,8 +11,12 @@ class ShopApp extends StatefulWidget {
 class _ShopAppState extends State<ShopApp> {
   @override
   Widget build(BuildContext context) {
+    double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight * 2 - MediaQuery.of(context).padding.vertical;
+
     return Scaffold(
-      appBar: appBar(title: '쇼핑관리'),
+      body: Container(
+        height: bodyHeight,
+      ),
     );
   }
 }

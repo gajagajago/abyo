@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'assets.dart';
 import 'transaction.dart';
 import '../../modals/modal_add_transaction.dart';
-import '../../commons/app_bar.dart';
 
 class AssetApp extends StatefulWidget {
   @override
@@ -42,15 +41,14 @@ class AssetAppState extends State<AssetApp> {
 
   @override
   Widget build(BuildContext context) {
-    final _appBar = appBar(title: '자산관리');
+    double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight * 2 - MediaQuery.of(context).padding.vertical;
 
     return Scaffold(
-      appBar: _appBar,
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.17,
+              height: bodyHeight * 0.21,
               child: FutureBuilder(
                 future: assets,
                 builder: (context, snapshot) {
@@ -64,7 +62,7 @@ class AssetAppState extends State<AssetApp> {
             ),
             Container(
                 width: double.infinity,
-                height: (MediaQuery.of(context).size.height - _appBar.preferredSize.height - MediaQuery.of(context).padding.top) * 0.83,
+                height: bodyHeight * 0.79,
                 child: FutureBuilder(
                   future: transactions,
                   builder: (context, snapshot) {

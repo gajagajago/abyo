@@ -11,9 +11,11 @@ class MealsApp extends StatefulWidget {
 class _MealsAppState extends State<MealsApp> {
   @override
   Widget build(BuildContext context) {
+    double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight * 2 - MediaQuery.of(context).padding.vertical;
+
     return Scaffold(
-      appBar: appBar(title: '식단관리'),
       body: Container(
+        height: bodyHeight,
       ),
     );
   }
