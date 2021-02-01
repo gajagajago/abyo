@@ -4,8 +4,9 @@ import 'screens/home/home.dart';
 import 'screens/home/auth.dart';
 import 'screens/user_auth/sign_up.dart';
 import 'screens/user_auth/sign_in.dart';
-import 'screens/quiz/quiz_app.dart';
 import 'screens/asset_app/asset_app.dart';
+import 'screens/meals_app/meals_app.dart';
+import 'screens/shop_app/shop_app.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,8 +23,9 @@ class MyApp extends StatelessWidget {
         '/auth': (context) => Auth(),
         '/sign_up': (context) => SignUp(),
         '/sign_in': (context) => SignIn(),
-        '/quiz': (context) => QuizApp(),
         '/asset': (context) => AssetApp(),
+        '/meals': (context) => MealsApp(),
+        '/shop': (context) => ShopApp(),
       },
     );
   }

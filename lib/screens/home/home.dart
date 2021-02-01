@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../commons/app_bar.dart';
 import '../asset_app/asset_app.dart';
 import '../meals_app/meals_app.dart';
+import '../shop_app/shop_app.dart';
 import '../my_page/my_page.dart';
 
 class Home extends StatefulWidget {
@@ -13,7 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currIndex = 0;
-  List<Widget> bottomNavigationItems = [AssetApp(), MealsApp(), MyPage()];
+  final List<Widget> bottomNavigationItems = [AssetApp(), MealsApp(), ShopApp(), MyPage()];
 
   @override
   void initState() {
@@ -33,15 +34,19 @@ class _HomeState extends State<Home> {
         },
         currentIndex: _currIndex,
         items: [
-          BottomNavigationBarItem(
-            label: '자산관리',
+          const BottomNavigationBarItem(
+            label: '자산',
             icon: Icon(Icons.attach_money),
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             label: '식단',
             icon: Icon(Icons.restaurant),
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
+            label: '쇼핑',
+            icon: Icon(Icons.shopping_bag),
+          ),
+          const BottomNavigationBarItem(
             label: '프로필',
             icon: Icon(Icons.account_circle),
           )

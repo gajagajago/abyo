@@ -6,10 +6,12 @@ PreferredSizeWidget appBar({String title}) {
   if (Platform.isAndroid) {
     return AppBar(
       title: Text(title),
+      leading: Container(),
     );
   } else {
     return CupertinoNavigationBar(
       middle: Text(title),
+      leading: Container(),
     );
   }
 }
