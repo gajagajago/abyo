@@ -47,49 +47,55 @@ class _TransactionState extends State<Transaction> {
       ),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) => destroyTransaction(),
-      child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 4
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 4,
         ),
-        padding: EdgeInsets.all(8),
-        width: double.infinity,
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  HelperFunction().assetCategory(widget.transaction['asset']['category']),
-                  style: TextStyle(
-                      fontSize: 16
+        child: Container(
+          // margin: EdgeInsets.symmetric(
+          //     horizontal: 8,
+          //     vertical: 4
+          // ),
+          padding: EdgeInsets.all(8),
+          width: double.infinity,
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    HelperFunction().assetCategory(widget.transaction['asset']['category']),
+                    style: TextStyle(
+                        fontSize: 16
+                    ),
                   ),
-                ),
-                Text(
-                  DateFormat("yyyy-MM-dd").format(DateTime.parse(widget.transaction['time'])),
-                  style: TextStyle(
-                      color: Colors.grey
+                  Text(
+                    DateFormat("yyyy-MM-dd").format(DateTime.parse(widget.transaction['time'])),
+                    style: TextStyle(
+                        color: Colors.grey
+                    ),
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.transaction['title'],
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
+                    ),
                   ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  widget.transaction['title'],
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-                amount(widget.transaction['amount'])
-              ],
-            )
-          ],
+                  amount(widget.transaction['amount'])
+                ],
+              )
+            ],
+          ),
         ),
       )
     );

@@ -41,7 +41,7 @@ class AssetAppState extends State<AssetApp> {
 
   @override
   Widget build(BuildContext context) {
-    double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight * 2 - MediaQuery.of(context).padding.vertical;
+    double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - kBottomNavigationBarHeight;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -60,27 +60,28 @@ class AssetAppState extends State<AssetApp> {
                 },
               ),
             ),
-            Container(
-                width: double.infinity,
-                height: bodyHeight * 0.79,
-                child: FutureBuilder(
-                  future: transactions,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        itemBuilder: (context, idx) {
-                          return Transaction(snapshot.data[idx], initAssets, initTransactions);
-                        },
-                        itemCount: snapshot.data.length,
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                )
-            ),
-          ],
-        ),
+            ConstrainedBox(
+              constraints: BoxConstraints.tightFor(
+                height: bodyHeight * 0.79 - 27, // temp
+              ),
+              child: FutureBuilder(
+              future: transactions,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemBuilder: (context, idx) {
+                      return Transaction(snapshot.data[idx], initAssets,
+                          initTransactions);
+                    },
+                    itemCount: snapshot.data.length,
+                  );
+                } else {
+                  return Container();
+                }
+              })
+            )
+          ]
+        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
