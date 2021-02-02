@@ -1,29 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz/screens/asset_app/inherited_asset_app.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class AssetIcon extends StatefulWidget {
+class AssetIcon extends StatelessWidget {
   final _defaultColor = Colors.black;
   final String category;
   final int id;
+  final bool selected;
 
-  AssetIcon({this.category, this.id});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _AssetIconState();
-  }
-}
-
-class _AssetIconState extends State<AssetIcon> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  AssetIcon({this.category, this.id, this.selected});
 
   Color setColor(Color color) {
-    return InheritedAssetApp.of(context).assetAppState.assetCategoryId == widget.id ? color : widget._defaultColor;
+    return selected ? color : _defaultColor;
   }
 
   dynamic setIcon(String category) {
@@ -74,7 +62,8 @@ class _AssetIconState extends State<AssetIcon> {
 
   @override
   Widget build(BuildContext context) {
-    return setIcon(widget.category);
+    return setIcon(category);
   }
 }
+
 

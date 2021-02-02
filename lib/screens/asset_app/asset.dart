@@ -11,6 +11,8 @@ class Asset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isSelectedCategory = InheritedAssetApp.of(context).assetAppState.assetCategoryId == asset['id'];
+
     return Container(
       child: InkWell(
         onTap: () => {
@@ -18,10 +20,15 @@ class Asset extends StatelessWidget {
         },
         child: Row(
           children: [
-            AssetIcon(category: asset['category'], id: asset['id']),
+            AssetIcon(category: asset['category'], id: asset['id'], selected: isSelectedCategory),
             Container(
               margin: EdgeInsets.only(left: 10),
-              child: Text('${HelperFunction().moneyFormatter(currency: 'krw', amount: asset['amount'])}')
+              child: Text(
+                '${HelperFunction().moneyFormatter(currency: 'krw', amount: asset['amount'])}',
+                style: TextStyle(
+                  fontWeight: isSelectedCategory ? FontWeight.bold : FontWeight.normal
+                ),
+              )
             )
           ],
         )
