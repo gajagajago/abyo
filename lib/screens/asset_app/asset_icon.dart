@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz/screens/asset_app/inherited_asset_app.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AssetIcon extends StatefulWidget {
+  final _defaultColor = Colors.black;
   final String category;
+  final int id;
 
-  AssetIcon({this.category});
+  AssetIcon({this.category, this.id});
 
   @override
   State<StatefulWidget> createState() {
@@ -14,68 +17,56 @@ class AssetIcon extends StatefulWidget {
 }
 
 class _AssetIconState extends State<AssetIcon> {
-  Color _defaultColor = Colors.black;
-  Color _onTappedColor;
-
   @override
   void initState() {
     super.initState();
-    _onTappedColor = _defaultColor;
   }
 
-  void _onTap(Color color) {
-    setState(() {
-      _onTappedColor = _onTappedColor == _defaultColor ? color : _defaultColor;
-    });
+  Color setColor(Color color) {
+    return InheritedAssetApp.of(context).assetAppState.assetCategoryId == widget.id ? color : widget._defaultColor;
   }
 
   dynamic setIcon(String category) {
     if (category == 'credit') {
       return InkWell(
-        onTap: () => _onTap(HexColor("#C0C0C0")),
         child: Icon(
           Icons.credit_card,
-          color: _onTappedColor,
+          color: setColor(HexColor("#C0C0C0")),
         ),
       );
     } else if (category == 'stock') {
       return InkWell(
-          onTap: () => _onTap(HexColor("#FFAE42")),
           child: Icon(
               Icons.show_chart,
-              color: _onTappedColor
+              color: setColor(HexColor("#FFAE42"))
           )
       );
     } else if (category == 'bitcoin') {
       return InkWell(
-        onTap: () => _onTap(HexColor("#FF9900")),
         child: Icon(
           CupertinoIcons.bitcoin_circle_fill,
-          color: _onTappedColor,
+          color: setColor(HexColor("#FF9900")),
         ),
       );
     } else if (category == 'bank') {
       return InkWell(
-        onTap: () => _onTap(HexColor("#D4AF37")),
         child: Icon(
           Icons.account_balance_wallet,
-          color: _onTappedColor,
+          color: setColor(HexColor("#D4AF37")),
         ),
       );
     } else if (category == 'cash') {
       return InkWell(
-        onTap: () => _onTap(HexColor("#85BB65")),
         child: Icon(
           Icons.money,
-          color: _onTappedColor,
+          color: setColor(HexColor("#85BB65")),
         ),
       );
     } else {
       return InkWell(
-        onTap: () => _onTap(HexColor("#0000FF")),
         child: Icon(
           Icons.more_horiz,
-          color: _onTappedColor,
+          color: setColor(HexColor("#0000FF")),
         ),
       );
     }

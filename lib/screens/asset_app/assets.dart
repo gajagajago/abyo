@@ -3,9 +3,8 @@ import 'asset.dart';
 
 class Assets extends StatelessWidget {
   final List<dynamic> assets;
-  final Function setCategory;
 
-  Assets(this.assets, this.setCategory);
+  Assets(this.assets);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class Assets extends StatelessWidget {
         child: Container(
           child: GridView(
             children: [
-              ...(assets).map((e) => Asset(e, setCategory))
+              ...(assets).map((e) => Asset(e))
             ],
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

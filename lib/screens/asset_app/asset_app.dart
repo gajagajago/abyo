@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz/screens/asset_app/inherited_asset_app.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'dart:io' show Platform;
@@ -52,67 +53,70 @@ class AssetAppState extends State<AssetApp> {
         Scaffold.of(context).appBarMaxHeight -
         kBottomNavigationBarHeight;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-          child: Column(children: [
-        Container(
-          height: bodyHeight * 0.2,
-          child: FutureBuilder(
-            future: assets,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Assets(snapshot.data as List<dynamic>, setCategory);
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ),
-        ConstrainedBox(
-            constraints: BoxConstraints.tightFor(
-              height: bodyHeight * 0.8 - 27, // temp
-            ),
-            child: FutureBuilder(
-                future: transactions,
+    return InheritedAssetApp(
+      child: Scaffold(
+        body: SingleChildScrollView(
+            child: Column(children: [
+              Container(
+                height: bodyHeight * 0.2,
+                child: FutureBuilder(
+                  future: assets,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Assets(snapshot.data as List<dynamic>);
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ),
+              ConstrainedBox(
+                  constraints: BoxConstraints.tightFor(
+                    height: bodyHeight * 0.8 - 27, // temp
+                  ),
+                  child: FutureBuilder(
+                      future: transactions,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var transactionList = assetCategoryId != null
+                              ? [...snapshot.data]
+                              .where((e) => e['asset']['id'] == assetCategoryId)
+                              .toList()
+                              : [...snapshot.data];
+
+                          return ListView.builder(
+                            itemBuilder: (context, idx) {
+                              return Transaction(
+                                  transactionList[idx], initAssets, initTransactions);
+                            },
+                            itemCount: transactionList.length,
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }))
+            ])),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showModalBottomSheet(
+            backgroundColor: Colors.transparent,
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => FutureBuilder(
+                future: assets,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    var transactionList = assetCategoryId != null
-                        ? [...snapshot.data]
-                            .where((e) => e['asset']['id'] == assetCategoryId)
-                            .toList()
-                        : [...snapshot.data];
-
-                    return ListView.builder(
-                      itemBuilder: (context, idx) {
-                        return Transaction(
-                            transactionList[idx], initAssets, initTransactions);
-                      },
-                      itemCount: transactionList.length,
-                    );
+                    return ModalAddTransaction(snapshot.data as List<dynamic>,
+                        initAssets, initTransactions);
                   } else {
                     return Container();
                   }
-                }))
-      ])),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => FutureBuilder(
-              future: assets,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ModalAddTransaction(snapshot.data as List<dynamic>,
-                      initAssets, initTransactions);
-                } else {
-                  return Container();
-                }
-              }),
+                }),
+          ),
+          child: Icon(Icons.add_rounded),
+          backgroundColor: Colors.blue,
         ),
-        child: Icon(Icons.add_rounded),
-        backgroundColor: Colors.blue,
       ),
+      assetAppState: this,
     );
   }
 }
