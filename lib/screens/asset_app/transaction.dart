@@ -53,10 +53,6 @@ class _TransactionState extends State<Transaction> {
           vertical: 4,
         ),
         child: Container(
-          // margin: EdgeInsets.symmetric(
-          //     horizontal: 8,
-          //     vertical: 4
-          // ),
           padding: EdgeInsets.all(8),
           width: double.infinity,
           color: Colors.white,

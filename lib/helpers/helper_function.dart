@@ -41,8 +41,8 @@ class HelperFunction {
         return '카드';
       case 'stock':
         return '주식';
-      case 'real_estate':
-        return '부동산';
+      case 'bitcoin':
+        return '비트코인';
       case 'bank':
         return '은행';
       case 'cash':
