@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'dart:io' show Platform;
@@ -6,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import '../helpers/helper_function.dart';
 import '../commons/date_picker_text_button.dart';
+import '../screens/asset_app/stock_searcher.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   final List<dynamic> assets;
@@ -22,7 +24,10 @@ class ModalAddTransaction extends StatefulWidget {
 
 class _ModalAddTransactionState extends State<ModalAddTransaction> {
   final _formKey = GlobalKey<FormBuilderState>();
+  bool isStock = false;
   bool amountPositive = true;
+  List<dynamic> krxMktStock;
+  List<dynamic> searchedStockList;
 
   void changeFormKey(String field, String data) {
     _formKey.currentState.fields[field].didChange(data);
@@ -116,63 +121,97 @@ class _ModalAddTransactionState extends State<ModalAddTransaction> {
                               child: Text(HelperFunction()
                                   .assetCategory(a['category']))))
                         ],
-                      ),
-                      FormBuilderTextField(
-                        name: 'title',
-                        decoration: InputDecoration(
-                          labelText: '항목',
-                        ),
-                        valueTransformer: (text) => text.trim(),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 70),
-                        ]),
-                        keyboardType: TextInputType.text,
-                      ),
-                      FormBuilderTextField(
-                        name: 'amount',
-                        decoration: InputDecoration(
-                          labelText: '금액',
-                        ),
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.numeric(context),
-                        ]),
-                        keyboardType: TextInputType.number,
-                      ),
-                      FormBuilderField(
-                        name: "time",
-                        validator: FormBuilderValidators.compose(
-                            [FormBuilderValidators.required(context)]),
-                        builder: (FormFieldState<dynamic> field) {
-                          return InputDecorator(
-                              decoration: InputDecoration(
-                                labelText: "일자",
-                                errorText: field.errorText,
-                              ),
-                              child: DatePickerTextButton(changeFormKey));
+                        onChanged: (val) => {
+                          setState(() {
+                            isStock = val == 2;
+                          })
                         },
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          MaterialButton(
-                            child: Text("저장"),
-                            onPressed: () {
-                              if (_formKey.currentState.saveAndValidate()) {
-                                createTransaction(_formKey.currentState.value, amountPositive)
-                                    .then((value) => {
+                      Stack(
+                        children: [
+                          Column(
+                            children: [
+                              ConditionalBuilder(
+                                  condition: isStock,
+                                  builder: (context) {
+                                    return FormBuilderField(
+                                        name: "title",
+                                        validator: FormBuilderValidators.compose([FormBuilderValidators.required(context)]),
+                                        builder: (FormFieldState<dynamic> field) {
+                                          return InputDecorator(
+                                              decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  labelText: "종목",
+                                                  errorText: field.errorText
+                                              ),
+                                              child: StockSearcher(changeFormKey)
+                                          );
+                                        }
+                                    );
+                                  },
+                                  fallback: (context) {
+                                    return FormBuilderTextField(
+                                      name: 'title',
+                                      decoration: InputDecoration(
+                                          labelText: '항목'
+                                      ),
+                                      valueTransformer: (text) => text.trim(),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(context),
+                                        FormBuilderValidators.max(context, 70),
+                                      ]),
+                                      keyboardType: TextInputType.text,
+                                    );
+                                  }
+                              ),
+                              FormBuilderTextField(
+                                name: 'amount',
+                                decoration: InputDecoration(
+                                    labelText: isStock ? '수량' : '금액'
+                                ),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                  FormBuilderValidators.numeric(context),
+                                ]),
+                                keyboardType: TextInputType.number,
+                              ),
+                              FormBuilderField(
+                                name: "time",
+                                validator: FormBuilderValidators.compose(
+                                    [FormBuilderValidators.required(context)]),
+                                builder: (FormFieldState<dynamic> field) {
+                                  return InputDecorator(
+                                      decoration: InputDecoration(
+                                        labelText: isStock ? amountPositive ? "매수일자" : "매도일자" : "일자",
+                                        errorText: field.errorText,
+                                      ),
+                                      child: DatePickerTextButton(changeFormKey));
+                                },
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  MaterialButton(
+                                    child: Text("저장"),
+                                    onPressed: () {
+                                      if (_formKey.currentState.saveAndValidate()) {
+                                        createTransaction(_formKey.currentState.value, amountPositive)
+                                            .then((value) => {
                                           Navigator.of(context).pop()
                                         });
-                              }
-                            },
-                          ),
-                          MaterialButton(
-                            child: Text("초기화"),
-                            onPressed: () {
-                              _formKey.currentState.reset();
-                            },
-                          ),
+                                      }
+                                    },
+                                  ),
+                                  MaterialButton(
+                                    child: Text("초기화"),
+                                    onPressed: () {
+                                      _formKey.currentState.reset();
+                                    },
+                                  ),
+                                ],
+                              )
+                            ],
+                          )
                         ],
                       )
                     ],

@@ -4,6 +4,8 @@ PODS:
     - Flutter
   - flutter_money_formatter (0.0.1):
     - Flutter
+  - hexcolor (0.0.1):
+    - Flutter
   - shared_preferences (0.0.1):
     - Flutter
 
@@ -11,6 +13,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_money_formatter (from `.symlinks/plugins/flutter_money_formatter/ios`)
+  - hexcolor (from `.symlinks/plugins/hexcolor/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 EXTERNAL SOURCES:
@@ -20,6 +23,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_money_formatter:
     :path: ".symlinks/plugins/flutter_money_formatter/ios"
+  hexcolor:
+    :path: ".symlinks/plugins/hexcolor/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
 
@@ -27,6 +32,7 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_money_formatter: d0d18ddc5be333fad8d09964d741b59fa11a91dc
+  hexcolor: fdfb9c4258ad96e949c2dbcdf790a62194b8aa89
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
