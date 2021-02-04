@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_quiz/modals/asset_title_textfield.dart';
 import 'package:flutter_quiz/screens/asset_app/inherited_modal_add_transaction.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'dart:io' show Platform;
@@ -11,6 +13,8 @@ import '../commons/date_picker_text_button.dart';
 import '../screens/asset_app/stock_searcher.dart';
 import 'positive_toggle_switch.dart';
 import 'asset_category_chip.dart';
+import 'asset_title_textfield.dart';
+import 'searched_stock_list.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   final List<dynamic> assets;
@@ -229,12 +233,13 @@ class ModalAddTransaction extends StatefulWidget {
 
 class ModalAddTransactionState extends State<ModalAddTransaction> {
   Map<String, dynamic> formKey;
-  bool test = true;
+  List<dynamic> searchedStockList;
 
   @override
   void initState() {
     super.initState();
     formKey = {
+      'asset_category': null,
       'asset_id': null,
       'title': null,
       'stock_code': null,
@@ -247,6 +252,12 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
   void setFormKey({String key, dynamic value}) {
     setState(() {
       formKey[key] = value;
+    });
+  }
+
+  void setSearchedStockList({List<dynamic> list}) {
+    setState(() {
+      searchedStockList = list;
     });
   }
 
@@ -271,17 +282,13 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
                   children: [
                     PositiveToggleSwitch(),
                     AssetCategoryChip(),
+                    AssetTitleTextfield(),
+                    SizedBox(
+                      height: 200, //temp
+                    )
                   ],
                 ),
-                Positioned(
-                  left: 20,
-                  bottom: 80,
-                  child: Container(
-                    color: Colors.green,
-                    width: 50,
-                    height: 50,
-                  ),
-                ),
+                SearchedStockList(),
               ],
             )
           )

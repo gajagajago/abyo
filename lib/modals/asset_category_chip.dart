@@ -21,15 +21,28 @@ class _AssetCategoryChipState extends State<AssetCategoryChip> {
               .modalAddTransactionState
               .widget
               .assets
-              .map((e) => ActionChip(
-                    onPressed: () => InheritedModalAddTransaction.of(context)
-                        .modalAddTransactionState
-                        .setFormKey(key: 'asset_id', value: e['id']),
+              .map((e) {
+                bool _selected = InheritedModalAddTransaction.of(context).modalAddTransactionState.formKey['asset_id'] == e['id'];
+
+                return ChoiceChip(
+                    selected: _selected,
+                    onSelected: (selected) {
+                      InheritedModalAddTransaction.of(context).modalAddTransactionState.setFormKey(key: 'asset_id', value: e['id']);
+                      InheritedModalAddTransaction.of(context).modalAddTransactionState.setFormKey(key: 'asset_category', value: e['category']);
+                    },
+                    selectedColor: Colors.transparent,
+                    shape: StadiumBorder(
+                      side: BorderSide(
+                        color: _selected ? InheritedModalAddTransaction.of(context).modalAddTransactionState.formKey['positive'] ? Colors.red : Colors.blue : Colors.transparent,
+                        width: 1.0,
+                      )
+                    ),
                     label: Text(HelperFunction().assetCategory(e['category'])),
                     elevation: 1.0,
                     backgroundColor: Colors.white,
                     padding: EdgeInsets.all(4.0),
-                  )))
+                  );
+              }))
         ],
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       ),
