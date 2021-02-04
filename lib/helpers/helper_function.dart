@@ -35,7 +35,7 @@ class HelperFunction {
     return digit;
   }
 
-  String assetCategory(category) {
+  String assetCategory(String category) {
     switch(category) {
       case 'credit':
         return '카드';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz/screens/asset_app/asset_app.dart';
+import 'asset_app.dart';
 
 class InheritedAssetApp extends InheritedWidget {
   final AssetAppState assetAppState;
