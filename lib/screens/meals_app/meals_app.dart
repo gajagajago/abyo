@@ -53,31 +53,8 @@ class _MealsAppState extends State<MealsApp> {
         child: Center(
           child: Column(
             children: [
-              TextField(
-                onChanged: (val) => _searchStock(val),
-              ),
-              ConditionalBuilder(
-                condition: searchedResults != null,
-                builder: (context) {
-                  return ConstrainedBox(
-                    constraints: BoxConstraints.tightFor(height: bodyHeight * 0.7),
-                    child: ListView.builder(
-                      itemCount: searchedResults.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(searchedResults[index]['name']),
-                              Text(searchedResults[index]['code'])
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  );
-                }
-              ),
+              RaisedButton(onPressed: xmlToMap)
+
             ],
           )
         ),
@@ -96,7 +73,5 @@ Future<dynamic> xmlToMap() async {
     xml.XmlDocument data = xml.XmlDocument.parse(response.body);
     String price = data.findAllElements('DailyStock').first.getAttribute('day_EndPrice');
     print(price);
-
   }
-
 }

@@ -5,6 +5,7 @@ import 'package:flutter_quiz/modals/transaction_amount_text_field.dart';
 import 'package:flutter_quiz/modals/transaction_date_picker.dart';
 import 'package:flutter_quiz/modals/transaction_title_text_field.dart';
 import 'package:flutter_quiz/screens/asset_app/inherited_modal_add_transaction.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'positive_toggle_switch.dart';
@@ -131,9 +132,12 @@ Future<bool> createTransaction(var params) async {
   var url = Platform.isAndroid
       ? 'http://10.0.2.2:3000/api/v1/assets/${params['asset_id']}/transactions'
       : 'http://127.0.0.1:3000/api/v1/assets/${params['asset_id']}/transactions';
+  var authToken = await FlutterSession().get('authentication_token');
 
   final response = await http.post(url,
-      headers: {'Content-Type': "application/json"}, body: jsonEncode(paramsFormat));
+      headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+      body: jsonEncode(paramsFormat)
+  );
 
   return response.statusCode == 200;
 }
