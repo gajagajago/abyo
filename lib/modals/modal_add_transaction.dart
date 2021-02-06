@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_quiz/modals/asset_title_textfield.dart';
+import 'package:flutter_quiz/modals/transaction_amount_text_field.dart';
+import 'package:flutter_quiz/modals/transaction_date_picker.dart';
+import 'package:flutter_quiz/modals/transaction_title_text_field.dart';
 import 'package:flutter_quiz/screens/asset_app/inherited_modal_add_transaction.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'dart:io' show Platform;
@@ -13,8 +15,10 @@ import '../commons/date_picker_text_button.dart';
 import '../screens/asset_app/stock_searcher.dart';
 import 'positive_toggle_switch.dart';
 import 'asset_category_chip.dart';
-import 'asset_title_textfield.dart';
+import 'transaction_title_text_field.dart';
 import 'searched_stock_list.dart';
+import 'transaction_amount_text_field.dart';
+import 'transaction_date_picker.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   final List<dynamic> assets;
@@ -282,11 +286,32 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
                   children: [
                     PositiveToggleSwitch(),
                     AssetCategoryChip(),
-                    AssetTitleTextfield(),
-                    SizedBox(
-                      height: 200, //temp
+                    TransactionTitleTextField(),
+                    TransactionAmountTextField(),
+                    TransactionDatePicker(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                          child: Text("저장"),
+                          // onPressed: () {
+                          //   if (_formKey.currentState.saveAndValidate()) {
+                          //     createTransaction(_formKey.currentState.value, amountPositive)
+                          //         .then((value) => {
+                          //           Navigator.of(context).pop()
+                          //         });
+                          //   }
+                          //   },
+                        ),
+                        MaterialButton(
+                          child: Text("초기화"),
+                          // onPressed: () {
+                          //   _formKey.currentState.reset();
+                          //   },
+                        ),
+                      ],
                     )
-                  ],
+                  ]
                 ),
                 SearchedStockList(),
               ],

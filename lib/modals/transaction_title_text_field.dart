@@ -4,16 +4,16 @@ import 'package:flutter_quiz/screens/asset_app/inherited_modal_add_transaction.d
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 
-class AssetTitleTextfield extends StatefulWidget {
+class TransactionTitleTextField extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _AssetTitleTextfieldState();
+    return TransactionTitleTextFieldState();
   }
 }
 
-class _AssetTitleTextfieldState extends State<AssetTitleTextfield> {
+class TransactionTitleTextFieldState extends State<TransactionTitleTextField> {
   final titleController = TextEditingController();
-  final stockController = TextEditingController();
+  static final stockController = TextEditingController();
   List<dynamic> krxMktStock;
 
   Future<void> fetchStocks() async {
@@ -36,11 +36,13 @@ class _AssetTitleTextfieldState extends State<AssetTitleTextfield> {
       InheritedModalAddTransaction.of(context).modalAddTransactionState.setFormKey(key: 'title', value: titleController.text);
     });
     stockController.addListener(() {
-      Future.delayed(Duration(seconds: 1), () {
-        InheritedModalAddTransaction.of(context).modalAddTransactionState.setSearchedStockList(
-            list: krxMktStock.where((e) => e['name'].contains(stockController.text)).toList()
-        );
-      });
+      if (InheritedModalAddTransaction.of(context).modalAddTransactionState.formKey['title'] != stockController.text) {
+        Future.delayed(Duration(seconds: 1), () {
+          InheritedModalAddTransaction.of(context).modalAddTransactionState.setSearchedStockList(
+              list: krxMktStock.where((e) => e['name'].contains(stockController.text)).toList()
+          );
+        });
+      }
     });
   }
 
@@ -50,26 +52,20 @@ class _AssetTitleTextfieldState extends State<AssetTitleTextfield> {
 
     if (isStock) {
       return Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('종목명'),
-            TextField(
-              controller: stockController,
-            ),
-          ],
+        child: TextField(
+          decoration: InputDecoration(
+              labelText: '종목'
+          ),
+          controller: stockController,
         ),
       );
     } else {
       return Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('항목'),
-            TextField(
-              controller: titleController,
-            ),
-          ],
+        child: TextField(
+          decoration: InputDecoration(
+              labelText: '항목'
+          ),
+          controller: titleController,
         ),
       );
     }

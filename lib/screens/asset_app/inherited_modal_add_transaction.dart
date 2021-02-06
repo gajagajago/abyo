@@ -10,7 +10,7 @@ class InheritedModalAddTransaction extends InheritedWidget {
   bool updateShouldNotify(InheritedModalAddTransaction old) {
     //somewhat..
     print(this.modalAddTransactionState.formKey);
-    return this.modalAddTransactionState.formKey['positive'] != old.modalAddTransactionState.formKey['positive'];
+    return false;
   }
 
   static InheritedModalAddTransaction of(BuildContext context) => context.dependOnInheritedWidgetOfExactType();
