@@ -8,8 +8,6 @@ class InheritedModalAddTransaction extends InheritedWidget {
 
   @override
   bool updateShouldNotify(InheritedModalAddTransaction old) {
-    //somewhat..
-    print(this.modalAddTransactionState.formKey);
     return false;
   }
 

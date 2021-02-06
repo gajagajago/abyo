@@ -26,7 +26,6 @@ class _SearchedStockListState extends State<SearchedStockList> {
 
   @override
   Widget build(BuildContext context) {
-    print('Build searched stock list');
     List<dynamic> _searchedStockList = InheritedModalAddTransaction.of(context).modalAddTransactionState.searchedStockList;
     bool isStock = InheritedModalAddTransaction.of(context).modalAddTransactionState.formKey['asset_category'] == 'stock';
 
