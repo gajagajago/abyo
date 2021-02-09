@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currIndex = 0;
-  final List<String> appBarTitles = ['자산관리', '식단관리', '쇼핑관리', '프로필'];
+  final List<String> appBarTitles = ['자산관리', '식단관리', '쇼핑', '프로필'];
   final List<Widget> bottomNavigationItems = [AssetApp(), MealsApp(), ShopApp(), MyPage()];
 
   @override
