@@ -36,6 +36,7 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
   void initState() {
     super.initState();
     initFormKey();
+    initSearchedStockList();
   }
 
   void initFormKey() {
@@ -51,6 +52,13 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
       };
     });
   }
+
+  void initSearchedStockList() {
+    setState(() {
+      searchedStockList = null;
+    });
+  }
+
   void setFormKey({String key, dynamic value}) {
     setState(() {
       formKey[key] = value;
