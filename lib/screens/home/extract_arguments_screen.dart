@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../commons/app_bar.dart';
 
 class ExtractArgumentsScreen extends StatelessWidget {
-  static String routeName = '/extract_arguments';
   final String appBarTitle;
   final Widget body;
 

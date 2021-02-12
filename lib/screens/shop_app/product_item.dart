@@ -17,12 +17,9 @@ class ProductItem extends StatelessWidget {
       child: GestureDetector(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ExtractArgumentsScreen(appBarTitle: '제품상세', body: ProductItemScreen(product: product)),
-            settings: RouteSettings(
-              arguments: {
-                'appBarTitle': '제품상세',
-                'body': ProductItemScreen(product: product)
-              }
+            builder: (context) => ExtractArgumentsScreen(
+                appBarTitle: '제품상세',
+                body: ProductItemScreen(product: product)
             )
           )
         ),
