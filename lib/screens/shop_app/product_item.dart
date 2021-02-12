@@ -3,6 +3,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../models/product.dart';
 import '../../helpers/helper_function.dart';
 import 'product_item_screen.dart';
+import '../home/extract_arguments_screen.dart';
+import '../../screens/shop_app/product_item_screen.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
@@ -13,8 +15,15 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridTile(
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ProductItemScreen(product: product)
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ExtractArgumentsScreen(appBarTitle: '제품상세', body: ProductItemScreen(product: product)),
+            settings: RouteSettings(
+              arguments: {
+                'appBarTitle': '제품상세',
+                'body': ProductItemScreen(product: product)
+              }
+            )
           )
         ),
         child: Column(

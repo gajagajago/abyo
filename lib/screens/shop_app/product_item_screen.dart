@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../models/product.dart';
 import '../../helpers/helper_function.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../commons/app_bar.dart';
 
 class ProductItemScreen extends StatefulWidget {
   final Product product;
@@ -11,58 +10,55 @@ class ProductItemScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _ProductItemScreen();
+    return _ProductItemScreenState();
   }
 }
 
-class _ProductItemScreen extends State<ProductItemScreen> {
+class _ProductItemScreenState extends State<ProductItemScreen> {
   @override
   Widget build(BuildContext context) {
     double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight * 2 - MediaQuery.of(context).padding.vertical;
 
-    return Scaffold(
-      appBar: appBar(title: '제품 상세'),
-      body: Container(
-        height: bodyHeight,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        widget.product.title,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                        ),
-                      ),
-                    ),
-                    Text(
-                      HelperFunction().moneyFormatter(currency: 'krw', amount: widget.product.price),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: HexColor("#AE0000"),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+    return Container(
+      height: bodyHeight,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.white
               ),
-              Image.network(widget.product.imageUrl),
-
-            ],
-          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      widget.product.title,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500
+                      ),
+                    ),
+                  ),
+                  Text(
+                    HelperFunction().moneyFormatter(currency: 'krw', amount: widget.product.price),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: HexColor("#AE0000"),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Image.network(widget.product.imageUrl),
+          ],
         ),
-      )
+      ),
     );
+
   }
 }
