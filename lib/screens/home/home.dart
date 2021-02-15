@@ -14,7 +14,35 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currIndex = 0;
-  final List<String> appBarTitles = ['자산관리', '식단관리', '쇼핑', '프로필'];
+  final List<Map<String, dynamic>> appBarAttributes = [
+    {
+      'title': '자산관리',
+      'leadingIcon': null,
+      'trailingIcon': null,
+    },
+    {
+      'title': '식단관리',
+      'leadingIcon': null,
+      'trailingIcon': null,
+    },
+    {
+      'title': '쇼핑',
+      'leadingIcon': null,
+      'trailingIcon': IconButton(
+        icon: Icon(Icons.favorite_outline),
+        color: Colors.black54,
+        iconSize: 30,
+        onPressed: () {
+
+        },
+      ),
+    },
+    {
+      'title': '프로필',
+      'leadingIcon': null,
+      'trailingIcon': null,
+    }
+  ];
   final List<Widget> bottomNavigationItems = [AssetApp(), MealsApp(), ShopApp(), MyPage()];
 
   @override
@@ -26,7 +54,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: appBar(title: appBarTitles[_currIndex]),
+        appBar: appBar(
+            title: appBarAttributes[_currIndex]['title'],
+            leadingIcon: appBarAttributes[_currIndex]['leadingIcon'],
+            trailingIcon: appBarAttributes[_currIndex]['trailingIcon']
+        ),
         body: bottomNavigationItems[_currIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
