@@ -11,7 +11,14 @@ class ProductsList with ChangeNotifier {
     Product(id: 6, title: "메신저백", description: "비엘 메신저백", price: 78000, imageUrl: "http://gdimg.gmarket.co.kr/1503106743/still/600?ver=1539238907"),
   ];
 
-  List<Product> get products => _products;
+  bool _favoriteFilter = false;
+
+  void toggleFavoriteFilter() {
+    _favoriteFilter = !_favoriteFilter;
+    notifyListeners(); // necessary?
+  }
+
+  List<Product> get products => _favoriteFilter ? favoriteProducts : _products;
 
   List<Product> get favoriteProducts => _products.where((p) => p.isFavorite).toList();
 }

@@ -4,6 +4,8 @@ import '../asset_app/asset_app.dart';
 import '../meals_app/meals_app.dart';
 import '../shop_app/shop_app.dart';
 import '../my_page/my_page.dart';
+import 'package:provider/provider.dart';
+import '../../providers/products_list.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,44 +16,40 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currIndex = 0;
-  final List<Map<String, dynamic>> appBarAttributes = [
-    {
-      'title': '자산관리',
-      'leadingIcon': null,
-      'trailingIcon': null,
-    },
-    {
-      'title': '식단관리',
-      'leadingIcon': null,
-      'trailingIcon': null,
-    },
-    {
-      'title': '쇼핑',
-      'leadingIcon': null,
-      'trailingIcon': IconButton(
-        icon: Icon(Icons.favorite_outline),
-        color: Colors.black54,
-        iconSize: 30,
-        onPressed: () {
-
-        },
-      ),
-    },
-    {
-      'title': '프로필',
-      'leadingIcon': null,
-      'trailingIcon': null,
-    }
-  ];
   final List<Widget> bottomNavigationItems = [AssetApp(), MealsApp(), ShopApp(), MyPage()];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> appBarAttributes = [
+      {
+        'title': '자산관리',
+        'leadingIcon': null,
+        'trailingIcon': null,
+      },
+      {
+        'title': '식단관리',
+        'leadingIcon': null,
+        'trailingIcon': null,
+      },
+      {
+        'title': '쇼핑',
+        'leadingIcon': null,
+        'trailingIcon': IconButton(
+          icon: Icon(Icons.favorite_outline),
+          color: Colors.black54,
+          iconSize: 30,
+          onPressed: () {
+            // Provider.of<ProductsList>(context, listen: false).toggleFavoriteFilter();
+          },
+        ),
+      },
+      {
+        'title': '프로필',
+        'leadingIcon': null,
+        'trailingIcon': null,
+      }
+    ];
+
     return MaterialApp(
       home: Scaffold(
         appBar: appBar(

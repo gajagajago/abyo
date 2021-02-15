@@ -8,17 +8,15 @@ class ProductItemGridTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridTile(
       child: GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => ExtractArgumentsScreen(
-                      appBarTitle: '제품상세',
-                      body: ProductItemScreen()
-                  )
-              )
-          );
-        },
         child: ProductItem(),
+        onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => ExtractArgumentsScreen(
+                    appBarTitle: '제품상세',
+                    body: ProductItemScreen()
+                )
+            )
+        )
       ),
     );
   }
