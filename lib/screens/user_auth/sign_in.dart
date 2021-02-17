@@ -10,26 +10,22 @@ import '../../providers/authenticate.dart';
 class SignIn extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
 
+  Future signIn(var params) async {
+    final String url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/sign_in' : 'http://127.0.0.1:3000/api/v1/sign_in';
+
+    final response = await http.post(
+        url,
+        headers: {'Content-Type': "application/json"},
+        body: jsonEncode(params)
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['authentication_token'];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> signIn(var params) async {
-      final String url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/sign_in' : 'http://127.0.0.1:3000/api/v1/sign_in';
-
-      final response = await http.post(
-          url,
-          headers: {'Content-Type': "application/json"},
-          body: jsonEncode(params)
-      );
-
-      if (response.statusCode == 200) {
-        print("REACHED HERE");
-        print("PROVIDER: ${Provider.of<Authenticate>(context)}");
-        Provider.of<Authenticate>(context)
-            .saveAuthToken(jsonDecode(response.body)['authentication_token'])
-            .then((value) => Navigator.of(context).popUntil((route) => route.isFirst));
-      }
-    }
-
     return Scaffold(
         appBar: appBar({'title': '로그인'}),
         body: Column(
@@ -64,9 +60,11 @@ class SignIn extends StatelessWidget {
                     keyboardType: TextInputType.text,
                   ),
                   FlatButton(
-                      onPressed: () => {
+                      onPressed: () {
                         if (_formKey.currentState.saveAndValidate()) {
                           signIn(_formKey.currentState.value)
+                              .then((val) => context.read<Authenticate>().saveAuthToken(val))
+                              .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
                         }
                       },
                       child: const Text('확인')
