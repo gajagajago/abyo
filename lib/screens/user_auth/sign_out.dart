@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
+import 'package:provider/provider.dart';
+import '../../providers/authenticate.dart';
 
 class SignOut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      child: Text('로그아웃'),
+      child: const Text('로그아웃'),
       onPressed: () {
-        _signOut(context);
-        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+        context.read<Authenticate>().destroyAuthToken()
+            .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
       }
     );
   }
-}
-
-Future<void> _signOut(BuildContext context) async {
-  await FlutterSession().set('authentication_token', '');
 }

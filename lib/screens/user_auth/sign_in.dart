@@ -10,20 +10,6 @@ import '../../providers/authenticate.dart';
 class SignIn extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
 
-  Future signIn(var params) async {
-    final String url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/sign_in' : 'http://127.0.0.1:3000/api/v1/sign_in';
-
-    final response = await http.post(
-        url,
-        headers: {'Content-Type': "application/json"},
-        body: jsonEncode(params)
-    );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body)['authentication_token'];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,5 +61,19 @@ class SignIn extends StatelessWidget {
           ],
         )
     );
+  }
+}
+
+Future signIn(var params) async {
+  final String url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/sign_in' : 'http://127.0.0.1:3000/api/v1/sign_in';
+
+  final response = await http.post(
+      url,
+      headers: {'Content-Type': "application/json"},
+      body: jsonEncode(params)
+  );
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body)['authentication_token'];
   }
 }

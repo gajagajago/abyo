@@ -3,8 +3,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
-import 'package:flutter_session/flutter_session.dart';
 import '../../commons/app_bar.dart';
+import 'package:provider/provider.dart';
+import '../../providers/authenticate.dart';
 
 class SignUp extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -54,13 +55,11 @@ class SignUp extends StatelessWidget {
                     keyboardType: TextInputType.text,
                   ),
                   FlatButton(
-                      onPressed: () => {
+                      onPressed: () {
                         if (_formKey.currentState.saveAndValidate()) {
-                          signUp(_formKey.currentState.value).then((value) => {
-                            if (value) {
-                              Navigator.of(context).pushReplacementNamed('/')
-                            }
-                          })
+                          signUp(_formKey.currentState.value)
+                              .then((val) => context.read<Authenticate>().saveAuthToken(val))
+                              .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
                         }
                       },
                       child: const Text('확인')
@@ -74,7 +73,7 @@ class SignUp extends StatelessWidget {
   }
 }
 
-Future<bool> signUp(var params) async {
+Future signUp(var params) async {
   final String url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/sign_up' : 'http://127.0.0.1:3000/api/v1/sign_up';
 
   final response = await http.post(
@@ -84,14 +83,6 @@ Future<bool> signUp(var params) async {
   );
 
   if (response.statusCode == 200) {
-    return saveAuthToken(jsonDecode(response.body)['authentication_token']);
-  } else {
-    return false;
+    return jsonDecode(response.body)['authentication_token'];
   }
-}
-
-Future<bool> saveAuthToken(String authToken) async {
-  await FlutterSession().set('authentication_token', authToken);
-
-  return FlutterSession().get('authentication_token') != null;
 }
