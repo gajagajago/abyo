@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '../screens/asset_app/asset_app.dart';
+import '../screens/meals_app/meals_app.dart';
+import '../screens/shop_app/shop_app.dart';
+import '../screens/my_page/my_page.dart';
 
 class HomeProvider with ChangeNotifier {
-  int _appBarIdx = 0;
-  int _bottomNavIdx = 0;
+  int _idx = 0;
 
   final List<Map<String, dynamic>> appBarItems = [
     {
@@ -34,6 +37,13 @@ class HomeProvider with ChangeNotifier {
     }
   ];
 
+  final List<Widget> bodyItems = [
+    AssetApp(),
+    MealsApp(),
+    ShopApp(),
+    MyPage()
+  ];
+
   final List<Map<String, dynamic>> bottomNavItems = [
     {
       'label': '자산',
@@ -53,19 +63,14 @@ class HomeProvider with ChangeNotifier {
     },
   ];
 
-  get bottomNavIdx => _bottomNavIdx;
+  get idx => _idx;
 
-  set appBarIdx(val) {
-    _appBarIdx = val;
+  set idx(val) {
+    _idx = val;
     notifyListeners();
   }
 
-  set bottomNavIdx(val) {
-    _bottomNavIdx = val;
-    _appBarIdx = val; // app bar is always in sync with bottom nav
-    notifyListeners();
-  }
-
-  Map<String, dynamic> get appBarItem => appBarItems[_appBarIdx];
-  Map<String, dynamic> get bottomNavItem => bottomNavItems[_bottomNavIdx];
+  Map<String, dynamic> get appBarItem => appBarItems[_idx];
+  Widget get bodyItem => bodyItems[_idx];
+  Map<String, dynamic> get bottomNavItem => bottomNavItems[_idx];
 }

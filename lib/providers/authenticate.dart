@@ -4,6 +4,10 @@ import 'package:flutter_session/flutter_session.dart';
 class Authenticate with ChangeNotifier {
   String _authToken;
 
+  Authenticate() {
+    initAuthToken();
+  }
+
   String get authToken => _authToken;
   set authToken(token) => _authToken = token;
 
@@ -16,5 +20,12 @@ class Authenticate with ChangeNotifier {
           notifyListeners();
         })
         .catchError((error) => print(error));
+  }
+
+  Future<bool> saveAuthToken(String authToken) async {
+    print("REACHED SAVE AUTH TOKEN WITH $authToken");
+    return await FlutterSession().set('authentication_token', authToken)
+        .then((value) => value)
+        .catchError((error) => error);
   }
 }

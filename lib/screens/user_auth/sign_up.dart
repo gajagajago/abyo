@@ -11,8 +11,7 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: appBar({'title': '회원가입'}),
         body: Column(
           children: [
@@ -71,7 +70,6 @@ class SignUp extends StatelessWidget {
             )
           ],
         )
-      )
     );
   }
 }

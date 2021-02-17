@@ -10,11 +10,11 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: appBar(homeProvider.appBarItem),
-      body: Container(),
+      body: homeProvider.bodyItem,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        onTap: (idx) => homeProvider.bottomNavIdx = idx,
-        currentIndex: homeProvider.bottomNavIdx,
+        onTap: (idx) => homeProvider.idx = idx,
+        currentIndex: homeProvider.idx,
         items: homeProvider.bottomNavItems.map((e) =>
             BottomNavigationBarItem(
               label: e['label'],
