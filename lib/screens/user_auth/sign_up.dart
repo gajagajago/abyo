@@ -13,7 +13,7 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: appBar(title: '회원가입'),
+        appBar: appBar({'title': '회원가입'}),
         body: Column(
           children: [
             FormBuilder(

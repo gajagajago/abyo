@@ -14,7 +14,7 @@ class ExtractArgumentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(title: appBarTitle),
+      appBar: appBar({'title': appBarTitle}),
       body: body,
     );
   }

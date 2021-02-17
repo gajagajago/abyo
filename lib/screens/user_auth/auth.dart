@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../commons/app_bar.dart';
 
-class Auth extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _AuthState();
-  }
-}
-
-class _AuthState extends State<Auth> {
+class Auth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar(title: '회원가입/로그인'),
+        appBar: appBar({'title': '회원가입/로그인'}),
         body: Column(
             children: [
               RaisedButton(
