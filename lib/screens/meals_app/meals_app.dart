@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/products_list.dart';
+import '../../providers/authenticate.dart';
 
 class MealsApp extends StatefulWidget {
   @override
@@ -10,12 +13,34 @@ class MealsApp extends StatefulWidget {
 class _MealsAppState extends State<MealsApp> {
   @override
   Widget build(BuildContext context) {
-    double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - kBottomNavigationBarHeight - MediaQuery.of(context).padding.vertical;
+    double bodyHeight = MediaQuery.of(context).size.height -
+        Scaffold.of(context).appBarMaxHeight -
+        kBottomNavigationBarHeight -
+        MediaQuery.of(context).padding.vertical;
 
     return Scaffold(
       body: Container(
-        height: bodyHeight,
-      ),
+          height: bodyHeight,
+          child: ChangeNotifierProvider(
+            create: (_) => ProductsList(authToken: context.read<Authenticate>().authToken),
+            lazy: false,
+            child: MealsAppContents(),
+          )),
     );
+  }
+}
+
+class MealsAppContents extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return !context.watch<ProductsList>().loading
+        ? Column(
+            children: context.watch<ProductsList>().products
+                .map((e) => Text(e.title))
+                .toList())
+        : Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ));
   }
 }
