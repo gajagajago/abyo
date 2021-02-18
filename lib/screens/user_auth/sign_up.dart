@@ -13,7 +13,7 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar({'title': '회원가입'}),
+        appBar: appBar(title: '회원가입'),
         body: Column(
           children: [
             FormBuilder(

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../../providers/products_list.dart';
 import '../../providers/authenticate.dart';
 import 'products_list_grid.dart';
+import '../../commons/app_bar.dart';
+import 'shop_app_app_bar_trailing.dart';
 
 class ShopApp extends StatelessWidget {
   @override
@@ -13,6 +15,10 @@ class ShopApp extends StatelessWidget {
       create: (_) => ProductsList(authToken: context.read<Authenticate>().authToken),
       lazy: false,
       child: Scaffold(
+        appBar: appBar(
+          title: '쇼핑',
+          trailing: ShopAppAppBarTrailing(),
+        ),
         body: Container(
           height: bodyHeight,
           child: ProductsListGrid(),

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'assets.dart';
 import 'transaction.dart';
 import '../../modals/modal_add_transaction.dart';
+import '../../commons/app_bar.dart';
 
 class AssetApp extends StatefulWidget {
   @override
@@ -55,6 +56,7 @@ class AssetAppState extends State<AssetApp> {
 
     return InheritedAssetApp(
       child: Scaffold(
+        appBar: appBar(title: '자산관리'),
         body: SingleChildScrollView(
             child: Column(children: [
               Container(

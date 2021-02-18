@@ -7,36 +7,6 @@ import '../screens/my_page/my_page.dart';
 class HomeProvider with ChangeNotifier {
   int _idx = 0;
 
-  final List<Map<String, dynamic>> appBarItems = [
-    {
-      'title': '자산관리',
-      'leadingIcon': null,
-      'trailingIcon': null,
-    },
-    {
-      'title': '식단관리',
-      'leadingIcon': null,
-      'trailingIcon': null,
-    },
-    {
-      'title': '쇼핑',
-      'leadingIcon': null,
-      'trailingIcon': IconButton(
-        icon: Icon(Icons.favorite_outline),
-        color: Colors.black54,
-        iconSize: 30,
-        onPressed: () {
-          // Provider.of<ProductsList>(context, listen: false).toggleFavoriteFilter();
-        },
-      ),
-    },
-    {
-      'title': '프로필',
-      'leadingIcon': null,
-      'trailingIcon': null,
-    }
-  ];
-
   final List<Widget> bodyItems = [
     AssetApp(),
     MealsApp(),
@@ -70,7 +40,6 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic> get appBarItem => appBarItems[_idx];
   Widget get bodyItem => bodyItems[_idx];
   Map<String, dynamic> get bottomNavItem => bottomNavItems[_idx];
 }

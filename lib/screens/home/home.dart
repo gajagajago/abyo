@@ -9,7 +9,6 @@ class Home extends StatelessWidget {
     final homeProvider = context.watch<HomeProvider>();
 
     return Scaffold(
-      appBar: appBar(homeProvider.appBarItem),
       body: homeProvider.bodyItem,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

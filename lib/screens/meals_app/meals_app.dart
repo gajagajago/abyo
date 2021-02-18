@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/products_list.dart';
 import '../../providers/authenticate.dart';
+import '../../commons/app_bar.dart';
 
 class MealsApp extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class _MealsAppState extends State<MealsApp> {
         MediaQuery.of(context).padding.vertical;
 
     return Scaffold(
+      appBar: appBar(title: '식단관리'),
       body: Container(
           height: bodyHeight,
           child: ChangeNotifierProvider(

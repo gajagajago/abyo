@@ -13,7 +13,7 @@ class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar({'title': '로그인'}),
+        appBar: appBar(title: '로그인'),
         body: Column(
           children: [
             FormBuilder(

@@ -14,6 +14,7 @@ class ProductsList with ChangeNotifier {
     fetchProductsList(authToken);
   }
 
+  bool get favoriteFilter => _favoriteFilter;
   List<Product> get products => _favoriteFilter ? favoriteProducts : _products;
   List<Product> get favoriteProducts => _products.where((p) => p.isFavorite).toList();
 
