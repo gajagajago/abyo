@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 class Assets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final assetsProvider = context.read<AssetsProvider>(); //read?
+    print("Build Assets");
+    final assetsProvider = context.watch<AssetsProvider>();
 
     return Container(
         width: double.infinity,

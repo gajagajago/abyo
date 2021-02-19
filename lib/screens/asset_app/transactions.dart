@@ -17,16 +17,25 @@ class Transactions extends StatelessWidget {
 class TransactionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("Build transaction list");
     final transactionsProvider = context.watch<TransactionsProvider>();
 
     return transactionsProvider.loading
         ? Container(child: Center(child: CircularProgressIndicator()))
         : ListView.builder(
-            itemBuilder: (context, int idx) => ChangeNotifierProvider(
-              create: (_) => transactionsProvider.transactions[idx],
+            itemBuilder: (context, int idx) => ChangeNotifierProvider.value(
+              value: transactionsProvider.transactions[idx],
               child: TransactionListTile(),
             ),
             itemCount: transactionsProvider.transactions.length,
           );
+    // : ListView(
+    //   children: [
+    //     ...(transactionsProvider.transactions.map((e) => ChangeNotifierProvider(
+    //       create: (_) => e,
+    //       child: TransactionListTile(),
+    //     )))
+    //   ],
+    // );
   }
 }
