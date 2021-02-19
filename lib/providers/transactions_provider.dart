@@ -34,7 +34,6 @@ class TransactionsProvider with ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      print(transactions[0].title);
       notifyListeners();
     }
   }
