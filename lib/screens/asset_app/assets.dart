@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz/providers/assets_provider.dart';
 import 'asset.dart';
+// import '../../providers/asset.dart';
+import 'package:provider/provider.dart';
 
 class Assets extends StatelessWidget {
-  final List<dynamic> assets;
-
-  Assets(this.assets);
-
   @override
   Widget build(BuildContext context) {
+    final assetsProvider = context.watch<AssetsProvider>();
+
     return Container(
         width: double.infinity,
         margin: EdgeInsets.all(8),
@@ -18,9 +19,7 @@ class Assets extends StatelessWidget {
             width: 1,
             color: Colors.white,
           ),
-          borderRadius: BorderRadius.all(
-              Radius.circular(15)
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -31,16 +30,15 @@ class Assets extends StatelessWidget {
           ],
         ),
         child: Container(
-          child: GridView(
-            children: [
-              ...(assets).map((e) => Asset(e))
-            ],
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 10/2,
-            ),
-          ),
-        )
-    );
+            child: assetsProvider.loading
+                ? Container(child: Center(child: CircularProgressIndicator()))
+                : GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 10/2
+                    ),
+                    itemBuilder: (context, int idx) => Asset(assetsProvider.assets[idx]),
+                    itemCount: assetsProvider.assets.length)
+        ));
   }
 }

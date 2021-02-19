@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz/screens/asset_app/inherited_asset_app.dart';
+import 'package:provider/provider.dart';
+import 'inherited_asset_app.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'dart:convert';
 import 'dart:io' show Platform;
@@ -8,6 +9,9 @@ import 'assets.dart';
 import 'transaction.dart';
 import '../../modals/modal_add_transaction.dart';
 import '../../commons/app_bar.dart';
+import 'asset_app_body.dart';
+import '../../providers/assets_provider.dart';
+import '../../providers/authenticate.dart';
 
 class AssetApp extends StatefulWidget {
   @override
@@ -50,55 +54,56 @@ class AssetAppState extends State<AssetApp> {
 
   @override
   Widget build(BuildContext context) {
-    double bodyHeight = MediaQuery.of(context).size.height -
-        Scaffold.of(context).appBarMaxHeight -
-        kBottomNavigationBarHeight;
-
     return InheritedAssetApp(
       child: Scaffold(
         appBar: appBar(title: '자산관리'),
-        body: SingleChildScrollView(
-            child: Column(children: [
-              Container(
-                height: bodyHeight * 0.2,
-                child: FutureBuilder(
-                  future: assets,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Assets(snapshot.data as List<dynamic>);
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              ),
-              ConstrainedBox(
-                  constraints: BoxConstraints.tightFor(
-                    height: bodyHeight * 0.8 - 27, // temp
-                  ),
-                  child: FutureBuilder(
-                      future: transactions,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          var transactionList = assetCategoryId != null
-                              ? [...snapshot.data]
-                              .where((e) => e['asset']['id'] == assetCategoryId)
-                              .toList()
-                              : [...snapshot.data];
-
-                          return ListView.builder(
-                            itemBuilder: (context, idx) {
-                              return Transaction(
-                                  transactionList[idx], initAssets, initTransactions);
-                            },
-                            itemCount: transactionList.length,
-                          );
-                        } else {
-                          return Container();
-                        }
-                      }))
-            ])),
-        floatingActionButton: FloatingActionButton(
+        body: ChangeNotifierProvider(
+          create: (_) => AssetsProvider(authToken: context.read<Authenticate>().authToken),
+          lazy: false,
+          child: AssetAppBody(),
+        )
+        // body: SingleChildScrollView(
+        //     child: Column(children: [
+        //       Container(
+        //         height: bodyHeight * 0.2,
+        //         child: FutureBuilder(
+        //           future: assets,
+        //           builder: (context, snapshot) {
+        //             if (snapshot.hasData) {
+        //               return Assets(snapshot.data as List<dynamic>);
+        //             } else {
+        //               return Container();
+        //             }
+        //           },
+        //         ),
+        //       ),
+        //       ConstrainedBox(
+        //           constraints: BoxConstraints.tightFor(
+        //             height: bodyHeight * 0.8 - 27, // temp
+        //           ),
+        //           child: FutureBuilder(
+        //               future: transactions,
+        //               builder: (context, snapshot) {
+        //                 if (snapshot.hasData) {
+        //                   var transactionList = assetCategoryId != null
+        //                       ? [...snapshot.data]
+        //                       .where((e) => e['asset']['id'] == assetCategoryId)
+        //                       .toList()
+        //                       : [...snapshot.data];
+        //
+        //                   return ListView.builder(
+        //                     itemBuilder: (context, idx) {
+        //                       return Transaction(
+        //                           transactionList[idx], initAssets, initTransactions);
+        //                     },
+        //                     itemCount: transactionList.length,
+        //                   );
+        //                 } else {
+        //                   return Container();
+        //                 }
+        //               }))
+        //     ])),
+        ,floatingActionButton: FloatingActionButton(
           onPressed: () => showModalBottomSheet(
             backgroundColor: Colors.transparent,
             context: context,
