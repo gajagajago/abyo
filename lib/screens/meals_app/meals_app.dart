@@ -14,20 +14,13 @@ class MealsApp extends StatefulWidget {
 class _MealsAppState extends State<MealsApp> {
   @override
   Widget build(BuildContext context) {
-    double bodyHeight = MediaQuery.of(context).size.height -
-        Scaffold.of(context).appBarMaxHeight -
-        kBottomNavigationBarHeight -
-        MediaQuery.of(context).padding.vertical;
-
     return Scaffold(
       appBar: appBar(title: '식단관리'),
-      body: Container(
-          height: bodyHeight,
-          child: ChangeNotifierProvider(
-            create: (_) => ProductsList(authToken: context.read<Authenticate>().authToken),
-            lazy: false,
-            child: MealsAppContents(),
-          )),
+      body: ChangeNotifierProvider(
+        create: (_) => ProductsList(authToken: context.read<Authenticate>().authToken),
+        lazy: false,
+        child: MealsAppContents(),
+      )
     );
   }
 }
@@ -35,14 +28,22 @@ class _MealsAppState extends State<MealsApp> {
 class MealsAppContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return !context.watch<ProductsList>().loading
-        ? Column(
-            children: context.watch<ProductsList>().products
-                .map((e) => Text(e.title))
-                .toList())
-        : Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ));
+    double bodyHeight = MediaQuery.of(context).size.height -
+        Scaffold.of(context).appBarMaxHeight -
+        kBottomNavigationBarHeight -
+        MediaQuery.of(context).padding.vertical;
+
+    return Container(
+      height: bodyHeight,
+      child: !context.watch<ProductsList>().loading
+          ? Column(
+          children: context.watch<ProductsList>().products
+              .map((e) => Text(e.title))
+              .toList())
+          : Container(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ))
+    );
   }
 }
