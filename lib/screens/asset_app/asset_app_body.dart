@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
-import 'dart:convert';
-import 'dart:io' show Platform;
-import 'package:http/http.dart' as http;
 import 'assets.dart';
-import 'transaction.dart';
-import '../../modals/modal_add_transaction.dart';
+import 'transactions.dart';
 
 class AssetAppBody extends StatelessWidget {
   @override
@@ -20,6 +15,10 @@ class AssetAppBody extends StatelessWidget {
           Container(
             height: bodyHeight * 0.2,
             child: Assets(),
+          ),
+          Container(
+            height: bodyHeight * 0.8 - 27,
+            child: Transactions(),
           )
         ],
       ),

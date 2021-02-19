@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz/providers/assets_provider.dart';
 import 'asset.dart';
-// import '../../providers/asset.dart';
 import 'package:provider/provider.dart';
 
 class Assets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final assetsProvider = context.watch<AssetsProvider>();
+    final assetsProvider = context.read<AssetsProvider>(); //read?
 
     return Container(
         width: double.infinity,

@@ -1,5 +1,3 @@
-import 'package:flutter_quiz/screens/asset_app/asset_app.dart';
-import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -9,7 +7,7 @@ import 'package:flutter/foundation.dart';
 
 class AssetsProvider with ChangeNotifier {
   List<Asset> _assets;
-  int _assetCategory;
+  int _assetCategoryId;
   bool loading = false;
 
   AssetsProvider({@required String authToken}) {
@@ -17,6 +15,11 @@ class AssetsProvider with ChangeNotifier {
   }
 
   get assets => _assets;
+  get assetCategoryId => _assetCategoryId;
+  set assetCategoryId(val) {
+    _assetCategoryId = _assetCategoryId == val ? null : val;
+    notifyListeners();
+  }
 
   Future fetchAssets(String authToken) async {
     try {
