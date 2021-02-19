@@ -16,12 +16,6 @@ import 'transaction_amount_text_field.dart';
 import 'transaction_date_picker.dart';
 
 class ModalAddTransaction extends StatefulWidget {
-  final List<dynamic> assets;
-  final Function initAssets;
-  final Function initTransactions;
-
-  ModalAddTransaction(this.assets, this.initAssets, this.initTransactions);
-
   @override
   State<StatefulWidget> createState() {
     return ModalAddTransactionState();
@@ -102,8 +96,8 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
                           child: Text("저장"),
                           onPressed: () {
                             createTransaction(formKey).then((val) => {
-                              widget.initAssets(),
-                              widget.initTransactions(),
+                              // widget.initAssets(),
+                              // widget.initTransactions(),
                               Navigator.of(context).pop()
                             });
                           }
