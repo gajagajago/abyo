@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../screens/asset_app/asset_app.dart';
-import '../screens/meals_app/meals_app.dart';
-import '../screens/shop_app/shop_app.dart';
-import '../screens/my_page/my_page.dart';
+import '../../screens/asset_app/asset_app.dart';
+import '../../screens/meals_app/meals_app.dart';
+import '../../screens/shop_app/shop_app.dart';
+import '../../screens/my_page/my_page.dart';
 
 class HomeProvider with ChangeNotifier {
   int _idx = 0;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/products_list.dart';
-import '../../providers/authenticate.dart';
+import '../../providers/shop_app/products_list.dart';
+import '../../providers/user_auth/authenticate.dart';
 import '../../commons/app_bar.dart';
 
 class MealsApp extends StatefulWidget {

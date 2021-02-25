@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_quiz/modals/transaction_amount_text_field.dart';
 import 'package:flutter_quiz/modals/transaction_date_picker.dart';
 import 'package:flutter_quiz/modals/transaction_title_text_field.dart';
-import 'package:flutter_quiz/providers/assets_provider.dart';
+import 'package:flutter_quiz/providers/asset_app/assets_provider.dart';
 import 'package:flutter_quiz/screens/asset_app/inherited_modal_add_transaction.dart';
 import 'positive_toggle_switch.dart';
 import 'asset_category_chip.dart';
@@ -12,8 +12,8 @@ import 'searched_stock_list.dart';
 import 'transaction_amount_text_field.dart';
 import 'transaction_date_picker.dart';
 import 'package:provider/provider.dart';
-import '../providers/authenticate.dart';
-import '../providers/transactions_provider.dart';
+import '../providers/user_auth/authenticate.dart';
+import '../providers/asset_app/transactions_provider.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   @override

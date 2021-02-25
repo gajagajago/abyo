@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz/providers/assets_provider.dart';
+import 'package:flutter_quiz/providers/asset_app/assets_provider.dart';
 import 'asset.dart';
 import 'package:provider/provider.dart';
 

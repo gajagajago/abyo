@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quiz/screens/asset_app/inherited_modal_add_transaction.dart';
 import '../helpers/helper_function.dart';
 import 'package:provider/provider.dart';
-import '../providers/assets_provider.dart';
+import '../providers/asset_app/assets_provider.dart';
 
 class AssetCategoryChip extends StatelessWidget {
   @override

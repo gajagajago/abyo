@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../providers/transaction.dart';
+import '../../providers/asset_app/transaction.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../helpers/helper_function.dart';
-import '../../providers/assets_provider.dart';
-import '../../providers/transactions_provider.dart';
-import '../../providers/authenticate.dart';
+import '../../providers/asset_app/assets_provider.dart';
+import '../../providers/asset_app/transactions_provider.dart';
+import '../../providers/user_auth/authenticate.dart';
 
 class TransactionListTile extends StatelessWidget {
   @override

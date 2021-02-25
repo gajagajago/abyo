@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../providers/product.dart';
+import '../../providers/shop_app/product.dart';
 import '../../helpers/helper_function.dart';
 import 'package:provider/provider.dart';
 

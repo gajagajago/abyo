@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import '../../helpers/http_request.dart';
 
 class Authenticate with ChangeNotifier {
   var _authToken;
@@ -29,5 +31,11 @@ class Authenticate with ChangeNotifier {
   Future destroyAuthToken() async {
     this.authToken = null;
     await FlutterSession().set('authentication_token', '');
+  }
+
+  Future signIn({Map<String, dynamic> params}) async {
+    await HttpRequest()
+        .post(partialUrl: "sign_in", body: params)
+        .then((response) => saveAuthToken(json.decode(response.body)['authentication_token']));
   }
 }

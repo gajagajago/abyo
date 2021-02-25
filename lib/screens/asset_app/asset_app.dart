@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../commons/app_bar.dart';
+import '../../providers/user_auth/authenticate.dart';
+import '../../providers/asset_app/assets_provider.dart';
+import '../../providers/asset_app/transactions_provider.dart';
 import 'asset_app_body.dart';
-import '../../providers/authenticate.dart';
-import '../../providers/assets_provider.dart';
-import '../../providers/transactions_provider.dart';
 import 'asset_app_floating.dart';
 
 class AssetApp extends StatelessWidget {

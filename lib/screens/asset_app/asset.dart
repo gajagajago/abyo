@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../helpers/helper_function.dart';
 import 'asset_icon.dart';
 import 'package:provider/provider.dart';
-import '../../providers/assets_provider.dart';
+import '../../providers/asset_app/assets_provider.dart';
 
 class Asset extends StatelessWidget {
   final asset;

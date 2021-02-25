@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/home_provider.dart';
-import '../../commons/app_bar.dart';
+import '../../providers/home/home_provider.dart';
 
 class Home extends StatelessWidget {
   @override

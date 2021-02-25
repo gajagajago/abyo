@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/assets_provider.dart';
-import '../../providers/transactions_provider.dart';
+import '../../providers/asset_app/assets_provider.dart';
+import '../../providers/asset_app/transactions_provider.dart';
 import 'transaction_list_tile.dart';
 
 class Transactions extends StatelessWidget {

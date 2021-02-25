@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import '../../commons/app_bar.dart';
 import 'package:provider/provider.dart';
-import '../../providers/authenticate.dart';
+import '../../providers/user_auth/authenticate.dart';
 
 class SignUp extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();

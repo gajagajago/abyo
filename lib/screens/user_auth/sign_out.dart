@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/authenticate.dart';
+import '../../providers/user_auth/authenticate.dart';
 
 class SignOut extends StatelessWidget {
   @override
