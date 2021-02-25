@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 
-PreferredSizeWidget appBar({@required String title, dynamic leading = null, dynamic trailing = null}) {
+PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic trailing}) {
   if (Platform.isAndroid) {
     return AppBar(
       title: Text(title),
       leading: leading,
-      actions: trailing,
+      actions: trailing == null ? [] : [trailing],
     );
   } else {
     return CupertinoNavigationBar(

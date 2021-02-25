@@ -14,8 +14,8 @@ class ProductsListGrid extends StatelessWidget {
                 crossAxisSpacing: 10,
                 crossAxisCount: 2,
                 childAspectRatio: 7 / 10),
-            itemBuilder: (context, int idx) => ChangeNotifierProvider(
-              create: (_) => context.read<ProductsList>().products[idx],
+            itemBuilder: (context, int idx) => ChangeNotifierProvider.value(
+              value: context.read<ProductsList>().products[idx],
               child: ProductItemGridTile(),
             ),
             itemCount: context.read<ProductsList>().products.length,

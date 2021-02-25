@@ -33,7 +33,6 @@ class TransactionListTile extends StatelessWidget {
           'transaction_id': transaction.id,
         };
         transactionsProvider.destroyTransaction(params: params, authToken: authToken).then((val) {
-          print("VAL: $val");
           if (val) {
             Future.delayed(const Duration(milliseconds: 0), () {
               assetsProvider.fetchAssets(authToken);

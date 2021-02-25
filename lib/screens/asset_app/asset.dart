@@ -12,7 +12,6 @@ class Asset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Build asset");
     final assetsProvider = context.read<AssetsProvider>();
     final bool isSelectedCategory = assetsProvider.assetCategoryId == asset.id;
 

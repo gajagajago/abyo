@@ -7,7 +7,6 @@ import '../../providers/asset_app/transactions_provider.dart';
 class AssetAppFloating extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Asset app floating context: ${context.watch<AssetsProvider>().loading}");
     return FloatingActionButton(
       child: const Icon(Icons.add_rounded),
       backgroundColor: Colors.blue,

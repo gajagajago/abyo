@@ -7,7 +7,6 @@ import 'transaction_list_tile.dart';
 class Transactions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Build transaction list");
     final assetCategoryId = context.watch<AssetsProvider>().assetCategoryId;
     final transactionsProvider = context.watch<TransactionsProvider>();
     final transactions = transactionsProvider.transactions(assetCategoryId);
