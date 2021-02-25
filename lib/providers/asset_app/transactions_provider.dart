@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:io' show Platform;
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'transaction.dart';
 import '../../helpers/http_request.dart';
@@ -49,10 +47,9 @@ class TransactionsProvider with ChangeNotifier {
 
     try {
       final response = await HttpRequest().post(
-        partialUrl: "assets/${params['asset_id']}/transactions",
-        authToken: authToken,
-        body: paramsFormat
-      );
+          partialUrl: "assets/${params['asset_id']}/transactions",
+          authToken: authToken,
+          body: paramsFormat);
 
       return response.statusCode == 200;
     } catch (e) {
@@ -61,14 +58,10 @@ class TransactionsProvider with ChangeNotifier {
   }
 
   Future destroyTransaction({Map<String, int> params, String authToken}) async {
-    String url = Platform.isAndroid
-        ? "http://10.0.2.2:3000/api/v1/assets/${params['asset_id']}/transactions/${params['transaction_id']}"
-        : "http://127.0.0.1:3000/api/v1/assets/${params['asset_id']}/transactions/${params['transaction_id']}";
-
     try {
-      final response = await http.delete(
-        url,
-        headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+      final response = await HttpRequest().delete(
+          partialUrl: "assets/${params['asset_id']}/transactions/${params['transaction_id']}",
+          authToken: authToken
       );
 
       return response.statusCode == 200;

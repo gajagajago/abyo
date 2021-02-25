@@ -38,4 +38,10 @@ class Authenticate with ChangeNotifier {
         .post(partialUrl: "sign_in", body: params)
         .then((response) => saveAuthToken(json.decode(response.body)['authentication_token']));
   }
+
+  Future signUp({Map<String, dynamic> params}) async {
+    await HttpRequest()
+        .post(partialUrl: "sign_up", body: params)
+        .then((response) => saveAuthToken(json.decode(response.body)['authentication_token']));
+  }
 }

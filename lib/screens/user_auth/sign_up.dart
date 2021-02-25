@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 import '../../commons/app_bar.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
@@ -57,8 +54,7 @@ class SignUp extends StatelessWidget {
                   FlatButton(
                       onPressed: () {
                         if (_formKey.currentState.saveAndValidate()) {
-                          signUp(_formKey.currentState.value)
-                              .then((val) => context.read<Authenticate>().saveAuthToken(val))
+                          context.read<Authenticate>().signUp(params: _formKey.currentState.value)
                               .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
                         }
                       },
@@ -70,19 +66,5 @@ class SignUp extends StatelessWidget {
           ],
         )
     );
-  }
-}
-
-Future signUp(var params) async {
-  final String url = Platform.isAndroid ? 'http://10.0.2.2:3000/api/v1/sign_up' : 'http://127.0.0.1:3000/api/v1/sign_up';
-
-  final response = await http.post(
-      url,
-      headers: {'Content-Type': "application/json"},
-      body: jsonEncode(params)
-  );
-
-  if (response.statusCode == 200) {
-    return jsonDecode(response.body)['authentication_token'];
   }
 }

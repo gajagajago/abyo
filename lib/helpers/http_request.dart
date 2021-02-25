@@ -38,4 +38,19 @@ class HttpRequest {
       print("Error on POST request");
     }
   }
+
+  Future delete({@required String partialUrl, @required String authToken}) async {
+    try {
+      final response = await http.delete(
+        _baseUrl+partialUrl,
+        headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+      );
+
+      if (response.statusCode == 200) {
+        return response;
+      }
+    } catch (e) {
+      print("Error on DELETE request");
+    }
+  }
 }
