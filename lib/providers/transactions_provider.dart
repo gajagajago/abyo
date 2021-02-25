@@ -41,4 +41,45 @@ class TransactionsProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future createTransaction({Map<String, dynamic> params, String authToken}) async {
+    Map<String, dynamic> paramsFormat = {
+      'title': params['title'],
+      'amount': params['positive'] ? params['amount'] : '-${params['amount']}',
+      'time': params['time'],
+      'stock_code': params['asset_category'] == 'stock' ? params['stock_code'] : null
+    };
+
+    String url = Platform.isAndroid
+        ? 'http://10.0.2.2:3000/api/v1/assets/${params['asset_id']}/transactions'
+        : 'http://127.0.0.1:3000/api/v1/assets/${params['asset_id']}/transactions';
+
+    try {
+      final response = await http.post(url,
+          headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+          body: jsonEncode(paramsFormat)
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future destroyTransaction({Map<String, int> params, String authToken}) async {
+    String url = Platform.isAndroid
+        ? "http://10.0.2.2:3000/api/v1/assets/${params['asset_id']}/transactions/${params['transaction_id']}"
+        : "http://127.0.0.1:3000/api/v1/assets/${params['asset_id']}/transactions/${params['transaction_id']}";
+
+    try {
+      final response = await http.delete(
+          url,
+          headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

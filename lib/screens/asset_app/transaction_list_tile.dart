@@ -3,11 +3,17 @@ import '../../providers/transaction.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../helpers/helper_function.dart';
+import '../../providers/assets_provider.dart';
+import '../../providers/transactions_provider.dart';
+import '../../providers/authenticate.dart';
 
 class TransactionListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transaction = context.read<Transaction>();
+    final assetsProvider = context.read<AssetsProvider>();
+    final transactionsProvider = context.read<TransactionsProvider>();
+    final authToken = context.read<Authenticate>().authToken;
 
     return Dismissible(
       key: ValueKey(transaction.id),
@@ -21,7 +27,20 @@ class TransactionListTile extends StatelessWidget {
         ),
       ),
       direction: DismissDirection.endToStart,
-      onDismissed: (direction) => {},
+      onDismissed: (direction) {
+        Map<String, int> params = {
+          'asset_id': transaction.asset['id'],
+          'transaction_id': transaction.id,
+        };
+        transactionsProvider.destroyTransaction(params: params, authToken: authToken).then((val) {
+          if (val) {
+            Future.delayed(const Duration(milliseconds: 0), () {
+              assetsProvider.fetchAssets(authToken);
+              transactionsProvider.fetchTransactions(authToken);
+            });
+          }
+        });
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 8,

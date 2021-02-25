@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../modals/modal_add_transaction.dart';
 import 'package:provider/provider.dart';
 import '../../providers/assets_provider.dart';
+import '../../providers/transactions_provider.dart';
 
 class AssetAppFloating extends StatelessWidget {
   @override
@@ -14,8 +15,11 @@ class AssetAppFloating extends StatelessWidget {
           backgroundColor: Colors.transparent,
           context: context,
           isScrollControlled: true,
-          builder: (_) => ChangeNotifierProvider.value(
-            value: context.read<AssetsProvider>(),
+          builder: (_) => MultiProvider(
+            providers: [
+              ChangeNotifierProvider.value(value: context.read<AssetsProvider>()),
+              ChangeNotifierProvider.value(value: context.read<TransactionsProvider>()),
+            ],
             child: ModalAddTransaction(),
           )
       ),

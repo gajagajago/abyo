@@ -17,11 +17,18 @@ class AssetApp extends StatelessWidget {
         ChangeNotifierProvider<AssetsProvider>(create: (_) => AssetsProvider(authToken: authToken)),
         ChangeNotifierProvider<TransactionsProvider>(create: (_) => TransactionsProvider(authToken: authToken))
       ],
-      child: Scaffold(
+      child: AssetAppScaffold()
+    );
+  }
+}
+
+class AssetAppScaffold extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         appBar: appBar(title: '자산관리'),
         body: AssetAppBody(),
         floatingActionButton: AssetAppFloating()
-      )
     );
   }
 }

@@ -1,19 +1,19 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_quiz/modals/transaction_amount_text_field.dart';
 import 'package:flutter_quiz/modals/transaction_date_picker.dart';
 import 'package:flutter_quiz/modals/transaction_title_text_field.dart';
+import 'package:flutter_quiz/providers/assets_provider.dart';
 import 'package:flutter_quiz/screens/asset_app/inherited_modal_add_transaction.dart';
-import 'package:flutter_session/flutter_session.dart';
-import 'dart:io' show Platform;
-import 'package:http/http.dart' as http;
 import 'positive_toggle_switch.dart';
 import 'asset_category_chip.dart';
 import 'transaction_title_text_field.dart';
 import 'searched_stock_list.dart';
 import 'transaction_amount_text_field.dart';
 import 'transaction_date_picker.dart';
+import 'package:provider/provider.dart';
+import '../providers/authenticate.dart';
+import '../providers/transactions_provider.dart';
 
 class ModalAddTransaction extends StatefulWidget {
   @override
@@ -67,6 +67,10 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    final assetsProvider = context.read<AssetsProvider>();
+    final transactionsProvider = context.read<TransactionsProvider>();
+    final authToken = context.read<Authenticate>().authToken;
+
     return InheritedModalAddTransaction(
       child: SingleChildScrollView(
         child: Container(
@@ -95,10 +99,14 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
                         MaterialButton(
                           child: Text("저장"),
                           onPressed: () {
-                            createTransaction(formKey).then((val) => {
-                              // widget.initAssets(),
-                              // widget.initTransactions(),
-                              Navigator.of(context).pop()
+                            transactionsProvider.createTransaction(params: formKey, authToken: authToken).then((val) {
+                              if (val) {
+                                Navigator.of(context).pop();
+                                assetsProvider.fetchAssets(authToken);
+                                transactionsProvider.fetchTransactions(authToken);
+                              } else {
+                                print("Error");
+                              }
                             });
                           }
                         ),
@@ -121,25 +129,4 @@ class ModalAddTransactionState extends State<ModalAddTransaction> {
       modalAddTransactionState: this,
     );
   }
-}
-
-Future<bool> createTransaction(var params) async {
-  Map<String, dynamic> paramsFormat = {
-    'title': params['title'],
-    'amount': params['positive'] ? params['amount'] : '-${params['amount']}',
-    'time': params['time'],
-    'stock_code': params['asset_category'] == 'stock' ? params['stock_code'] : null
-  };
-
-  var url = Platform.isAndroid
-      ? 'http://10.0.2.2:3000/api/v1/assets/${params['asset_id']}/transactions'
-      : 'http://127.0.0.1:3000/api/v1/assets/${params['asset_id']}/transactions';
-  var authToken = await FlutterSession().get('authentication_token');
-
-  final response = await http.post(url,
-      headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
-      body: jsonEncode(paramsFormat)
-  );
-
-  return response.statusCode == 200;
 }
