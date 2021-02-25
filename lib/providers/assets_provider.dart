@@ -16,8 +16,10 @@ class AssetsProvider with ChangeNotifier {
 
   get assets => _assets;
   get assetCategoryId => _assetCategoryId;
+
   set assetCategoryId(val) {
     _assetCategoryId = _assetCategoryId == val ? null : val;
+    print(val);
     notifyListeners();
   }
 

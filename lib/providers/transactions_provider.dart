@@ -13,7 +13,11 @@ class TransactionsProvider with ChangeNotifier {
     fetchTransactions(authToken);
   }
 
-  List<Transaction> get transactions => _transactions;
+  List<Transaction> transactions(dynamic assetCategoryId) {
+    return assetCategoryId == null
+        ? _transactions
+        : _transactions.where((e) => e.asset['id'] == assetCategoryId).toList();
+  }
 
   Future fetchTransactions(String authToken) async {
     try {
@@ -21,10 +25,10 @@ class TransactionsProvider with ChangeNotifier {
       String url = Platform.isAndroid
           ? 'http://10.0.2.2:3000/api/v1/transactions'
           : 'http://127.0.0.1:3000/api/v1/transactions';
-      final response = await http.get(
-          url,
-          headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken}
-      );
+      final response = await http.get(url, headers: {
+        'Content-Type': "application/json",
+        'AUTH-TOKEN': authToken
+      });
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
