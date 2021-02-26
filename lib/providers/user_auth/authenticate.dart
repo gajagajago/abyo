@@ -44,4 +44,10 @@ class Authenticate with ChangeNotifier {
         .post(partialUrl: "sign_up", body: params)
         .then((response) => saveAuthToken(json.decode(response.body)['authentication_token']));
   }
+
+  Future signOut({String authToken}) async {
+    await HttpRequest()
+        .delete(partialUrl: "sign_out", authToken: authToken)
+        .then((response) => response);
+  }
 }

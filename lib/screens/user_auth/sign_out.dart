@@ -8,7 +8,9 @@ class SignOut extends StatelessWidget {
     return RaisedButton(
       child: const Text('로그아웃'),
       onPressed: () {
-        context.read<Authenticate>().destroyAuthToken()
+        context.read<Authenticate>()
+            .signOut(authToken: context.read<Authenticate>().authToken)
+            .then((response) => context.read<Authenticate>().destroyAuthToken())
             .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
       }
     );
