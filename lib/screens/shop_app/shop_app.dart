@@ -5,6 +5,8 @@ import '../../providers/user_auth/authenticate.dart';
 import '../../commons/app_bar.dart';
 import 'shop_app_app_bar_trailing.dart';
 import 'shop_app_body.dart';
+import 'cart_screen.dart';
+import '../../commons/extract_arguments_screen.dart';
 
 class ShopApp extends StatelessWidget {
   @override
@@ -20,7 +22,14 @@ class ShopApp extends StatelessWidget {
         body: ShopAppBody(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.shopping_cart),
-          onPressed: null,
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ExtractArgumentsScreen(
+                appBar: appBar(title: '장바구니'),
+                body: CartScreen()
+              ),
+            )
+          ),
         ),
       )
     );

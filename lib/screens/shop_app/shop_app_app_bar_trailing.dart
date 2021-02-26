@@ -7,7 +7,7 @@ class ShopAppAppBarTrailing extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         icon: Icon(context.watch<ProductsList>().favoriteFilter ? Icons.favorite : Icons.favorite_outline),
-        color: context.watch<ProductsList>().favoriteFilter ? Colors.red : Colors.black54,
+        color: context.watch<ProductsList>().favoriteFilter ? Colors.red : Colors.white,
         iconSize: 30,
         onPressed: () => context.read<ProductsList>().toggleFavoriteFilter()
     );

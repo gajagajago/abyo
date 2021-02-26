@@ -15,14 +15,9 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
   Widget build(BuildContext context) {
     double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight * 2 - MediaQuery.of(context).padding.vertical;
 
-    return ChangeNotifierProvider(
-      create: (_) => Product(),
-      child: Container(
-        height: bodyHeight,
-        child: SingleChildScrollView(
-          child: ProductItem(),
-        )
-      )
+    return Container(
+      height: bodyHeight,
+      child: ProductItem(),
     );
   }
 }
