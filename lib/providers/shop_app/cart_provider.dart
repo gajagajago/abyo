@@ -19,7 +19,6 @@ class CartProvider with ChangeNotifier {
 
   Future fetchCartItems(String authToken) async {
     try {
-      print("Start fetching cart items .........");
       loading = true;
       await HttpRequest()
           .get(partialUrl: 'carts', authToken: authToken)
@@ -36,6 +35,24 @@ class CartProvider with ChangeNotifier {
       print(e);
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future createCartItem({@required String authToken, @required Map<String, int> params}) async {
+    try {
+      await HttpRequest().post(
+        partialUrl: "carts/$cartId/cart_items",
+        authToken: authToken,
+        body: params
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final res = json.decode(response.body);
+          print(res['msg']);
+          return response;
+        }
+      });
+    } catch (e) {
+      print(e);
     }
   }
 }

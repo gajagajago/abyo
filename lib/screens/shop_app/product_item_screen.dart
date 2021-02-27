@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../providers/shop_app/product.dart';
 import 'product_item.dart';
+import 'package:provider/provider.dart';
+import '../../providers/shop_app/cart_provider.dart';
+import '../../providers/user_auth/authenticate.dart';
+import '../../providers/shop_app/product.dart';
 
 class ProductItemScreen extends StatefulWidget {
   @override
@@ -11,8 +13,12 @@ class ProductItemScreen extends StatefulWidget {
 }
 
 class _ProductItemScreenState extends State<ProductItemScreen> {
+  int productCount = 1;
+
   @override
   Widget build(BuildContext context) {
+    final cartProvider = context.read<CartProvider>();
+    final authToken = context.read<Authenticate>().authToken;
     double bodyHeight = MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - MediaQuery.of(context).padding.vertical;
 
     return Container(
@@ -23,7 +29,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
             children: [
               ProductItem(),
               Container(
-                child: Text('수량'),
+                child: Text('수량: $productCount'),
               ),
             ],
           ),
@@ -47,9 +53,13 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                           '장바구니 담기',
                           style: TextStyle(color: Colors.blue),
                         ),
-                        onPressed: () {
-                          print("Pressed add to cart");
-                        },
+                        onPressed: () => cartProvider.createCartItem(
+                            authToken: authToken,
+                            params: {
+                              'product_id': context.read<Product>().id,
+                              'product_count': productCount,
+                            },
+                        ).then((value) => cartProvider.fetchCartItems(authToken))
                       ),
                     ),
                     Container(
